@@ -1,0 +1,33 @@
+{
+  "id": "goddess-of-death",
+  "title": "Goddess of Death",
+  "subtitle": "Self-portrait",
+  "year": "2022",
+  "medium": "Acrylic & Pencil",
+  "dimensions": "A3",
+  "series": "Self-portraits",
+  "tags": [
+    "self-portrait",
+    "decay",
+    "red",
+    "third eye",
+    "glasses"
+  ],
+  "palette": {
+    "accent": "#200808",
+    "glow": "rgba(120,21,32,0.2)",
+    "ice": "rgba(30,10,10,0.12)"
+  },
+  "motifs": [
+    "\ud83d\udc41",
+    "\ud83e\ude78",
+    "\ud83d\udc53"
+  ],
+  "images": {
+    "main": "main.jpg",
+    "details": []
+  },
+  "intro": "She's smiling. That's the most unsettling part.",
+  "story": "The face is partially decomposed, the mouth still full of blood and teeth, a third eye weeping down the forehead. The halo behind the head is dark red \u2014 almost black at its edges. Small green leaves fall around her like she's still outside, still alive enough for seasons to happen around her.",
+  "quote": "As a human you'll always find the meaning behind the mistakes."
+}

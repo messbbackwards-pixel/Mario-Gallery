@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse all paintings by Mario — a full collection of works spanning surrealism, portraiture, and psychological abstraction.">
+  <title>Mario — Gallery</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/gallery.css">
+  <style>
+    /* ─── Masonry column layout ───────────────────────────── */
+    .gallery-masonry {
+      columns: 3;
+      column-gap: 2.5rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+    @media (max-width: 1000px) { .gallery-masonry { columns: 2; } }
+    @media (max-width: 600px)  { .gallery-masonry { columns: 1; } }
+
+    /* ─── Light rays ──────────────────────────────────────── */
+    .light-ray {
+      position: fixed;
+      top: 0;
+      width: 1px;
+      height: 35vh;
+      background: linear-gradient(to bottom, rgba(216,207,196,0.07), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (max-width: 600px) {
+      .filters-wrapper { padding-top: 1.5rem !important; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FILTER VISIBILITY SYSTEM
+       ════════════════════════════════════════════════════════
+
+       Unified class-based approach. The transition must be
+       defined on the element at the moment it fires — so it
+       lives unconditionally on .masonry-card and is overridden
+       per-state as needed.
+
+       States:
+         (no class)       — stable visible. Base transition
+                            is present but idle at opacity:1.
+         .card-hiding     — fading out. ease-in so exit
+                            accelerates and doesn't linger.
+         .card-hidden     — display:none. Out of layout.
+                            No transition — already invisible.
+         .card-showing    — fading in. Override to ease-out
+                            for a softer, more deliberate entry.
+
+       Timings chosen for an art gallery, not a dashboard:
+         Exit:  220ms — unhurried, intentional departure
+         Enter: 380ms — softer, slightly slower than exit
+                        so the reveal feels considered
+
+       Why transitionend for exit (not setTimeout):
+         transitionend fires at the exact moment the opacity
+         animation finishes — no race condition, no timer drift.
+         The layout reflow (display:none) happens precisely once,
+         at the right moment, not a fixed ms later.
+       ════════════════════════════════════════════════════════ */
+
+    /* Base: transition always defined so it fires on class removal */
+    .masonry-card {
+      transition: opacity 0.22s ease-in;
+    }
+
+    /* Exiting — ease-in so it accelerates cleanly away */
+    .masonry-card.card-hiding {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Hidden — out of layout entirely */
+    .masonry-card.card-hidden {
+      display: none;
+    }
+
+    /* Entering — override to slower ease-out for a softer arrival.
+       pointer-events off until fully visible. */
+    .masonry-card.card-showing {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient light rays -->
+  <div class="light-ray" style="left:20%; animation-delay:0s;"></div>
+  <div class="light-ray" style="left:50%; animation-delay:1.3s;"></div>
+  <div class="light-ray" style="left:80%; animation-delay:0.7s;"></div>
+
+  <!-- Navigation -->
+  <nav class="gothic-nav">
+    <a href="index.html" class="nav-logo">mariothesmart</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="exhibition.html">Exhibition</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- Gallery Header -->
+  <header class="gallery-header">
+    <div class="gallery-header-bg"></div>
+    <div class="particles-container"></div>
+    <h1 class="section-title animate-up" style="position:relative;z-index:2;">All the Work</h1>
+    <p class="section-subtitle animate-up delay-1" style="position:relative;z-index:2;margin-bottom:1rem;">
+      <em>paintings, sketches, and things that happened on paper</em>
+    </p>
+    <p class="gallery-count animate-up delay-2" id="painting-count"></p>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters-wrapper" style="padding:3rem 2rem 0;max-width:1300px;margin:0 auto;">
+    <div class="gallery-filters" id="filters">
+      <button class="filter-btn active" data-filter="all">All Works</button>
+    </div>
+  </div>
+
+  <!-- Masonry Gallery -->
+  <div class="gallery-masonry" id="gallery-masonry"></div>
+
+  <!-- Footer -->
+  <footer class="gothic-footer">
+    <span class="footer-logo">mariothesmart</span>
+    <div class="gothic-divider" style="margin:1.5rem auto;"><div class="ornament">—</div></div>
+    <p><em>All works copyright © Mario. Do not reproduce without permission.</em></p>
+  </footer>
+
+  <script src="js/paintings-data.js"></script>
+  <script src="js/gallery.js"></script>
+  <script>
+    // ─── Build filter buttons from painting tags ─────────────
+    const allTags = [...new Set(PAINTINGS.flatMap(p => p.tags))];
+    const filtersEl = document.getElementById('filters');
+
+    allTags.forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.filter = tag;
+      btn.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
+      filtersEl.appendChild(btn);
+    });
+
+
+    // ════════════════════════════════════════════════════════
+    //  FILTER SYSTEM
+    // ════════════════════════════════════════════════════════
+    //
+    //  Class states on .masonry-card:
+    //    (none)         — stable visible
+    //    .card-hiding   — fading out, 220ms ease-in
+    //    .card-hidden   — display:none, out of layout
+    //    .card-showing  — fading in, 380ms ease-out
+    //
+    //  Staying cards: zero class changes. Completely inert.
+    //
+    //  Exit uses transitionend (not setTimeout) so display:none
+    //  fires at the exact moment opacity reaches 0 — no timer
+    //  drift, no ghost frames, no lingering.
+    // ════════════════════════════════════════════════════════
+
+    let activeFilter = 'all';
+
+    // Cards currently mid-exit, keyed by card element.
+    // Allows rapid-switch to snap them instantly.
+    const exitingCards = new Set();
+
+    filtersEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+
+      const filter = btn.dataset.filter;
+      if (filter === activeFilter) return;
+      activeFilter = filter;
+
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // ── Rapid-switch: snap in-flight exits to hidden now ──
+      // Any card still fading out gets collapsed immediately so
+      // the new pass starts from a clean, resolved state.
+      if (exitingCards.size > 0) {
+        exitingCards.forEach(card => {
+          card.classList.remove('card-hiding');
+          card.classList.add('card-hidden');
+          card.setAttribute('aria-hidden', 'true');
+          card.setAttribute('tabindex', '-1');
+        });
+        exitingCards.clear();
+      }
+
+      // ── Classify every card ───────────────────────────────
+      document.querySelectorAll('.masonry-card').forEach(card => {
+        const tags    = card.dataset.tags.split(',');
+        const match   = filter === 'all' || tags.includes(filter);
+        const hiding  = card.classList.contains('card-hiding');
+        const hidden  = card.classList.contains('card-hidden');
+        const showing = card.classList.contains('card-showing');
+        const stable  = !hiding && !hidden && !showing;
+
+        // Nothing to do for already-correct states
+        if (match && stable)  return;
+        if (!match && hidden) return;
+
+        // ── Visible card that needs to leave ─────────────────
+        if (!match && stable) {
+          card.classList.add('card-hiding');
+          exitingCards.add(card);
+
+          card.addEventListener('transitionend', function onExit(ev) {
+            // Guard: only react to opacity on the card itself,
+            // not to transitions on child elements (img scale etc.)
+            if (ev.target !== card || ev.propertyName !== 'opacity') return;
+            card.removeEventListener('transitionend', onExit);
+            exitingCards.delete(card);
+            // Guard: rapid switch may have already snapped this
+            if (card.classList.contains('card-hiding')) {
+              card.classList.remove('card-hiding');
+              card.classList.add('card-hidden');
+              card.setAttribute('aria-hidden', 'true');
+              card.setAttribute('tabindex', '-1');
+            }
+          }, { once: false });
+          return;
+        }
+
+        // ── Hidden card that needs to appear ─────────────────
+        if (match && hidden) {
+          // Step 1: restore display:block at opacity:0 with the
+          //   slow enter transition active (.card-showing).
+          card.classList.remove('card-hidden');
+          card.classList.add('card-showing');
+          card.removeAttribute('aria-hidden');
+          card.removeAttribute('tabindex');
+
+          // Step 2: two rAFs ensure the browser has fully painted
+          //   the display:block + opacity:0 state before we trigger
+          //   the transition by removing .card-showing.
+          //   rAF 1: layout restores. rAF 2: mutate opacity.
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if (card.classList.contains('card-showing')) {
+                card.classList.remove('card-showing');
+              }
+            });
+          });
+          return;
+        }
+
+        // ── Edge cases for rapid switching ───────────────────
+
+        // Was entering but shouldn't be anymore → snap to hidden
+        if (!match && showing) {
+          card.classList.remove('card-showing');
+          card.classList.add('card-hidden');
+          card.setAttribute('aria-hidden', 'true');
+          card.setAttribute('tabindex', '-1');
+          return;
+        }
+
+        // Was exiting but now matches again → cancel exit
+        if (match && hiding) {
+          card.classList.remove('card-hiding');
+          exitingCards.delete(card);
+          // Falls back to stable — no extra class needed
+        }
+      });
+    });
+
+
+    // ════════════════════════════════════════════════════════
+    //  RENDER PAINTINGS
+    // ════════════════════════════════════════════════════════
+
+    const masonryEl = document.getElementById('gallery-masonry');
+    const countEl   = document.getElementById('painting-count');
+    countEl.textContent = `${PAINTINGS.length} paintings`;
+
+    const heights  = [300, 370, 320, 400, 280, 350, 310, 360, 340, 390, 300];
+    const colCount = window.innerWidth > 1000 ? 3 : window.innerWidth > 600 ? 2 : 1;
+
+    PAINTINGS.forEach((p, i) => {
+      const card = document.createElement('a');
+      card.className    = 'masonry-card';
+      card.href         = `painting.html?id=${p.id}`;
+      card.dataset.tags = p.tags.join(',');
+
+      const col        = i % colCount;
+      const staggerSec = (col * 0.12).toFixed(2);
+      const h          = heights[i % heights.length];
+      const loadStrat  = i < 6 ? 'eager' : 'lazy';
+
+      const imgContent = p.image
+        ? `<img
+              class="masonry-img"
+              src="${p.image}"
+              alt="${p.title}"
+              style="height:${h}px;"
+              loading="${loadStrat}"
+              decoding="async">`
+        : `<div
+              class="masonry-placeholder"
+              style="height:${h}px;background:${p.gradient};"
+            >${p.icon}</div>`;
+
+      card.innerHTML = `
+        <div class="masonry-motion reveal-on-scroll" data-stagger="${staggerSec}">
+          <div class="masonry-frame">
+            <div class="masonry-canvas">
+              ${imgContent}
+            </div>
+          </div>
+          <div class="masonry-info">
+            <span class="masonry-tag-count">${p.year}</span>
+            <div class="masonry-title">${p.title}</div>
+            <div class="masonry-meta">${p.medium}</div>
+            <span class="masonry-badge">${p.series}</span>
+          </div>
+        </div>
+      `;
+
+      masonryEl.appendChild(card);
+    });
+  </script>
+
+  <script>
+    (function () {
+      const btn   = document.getElementById('nav-hamburger');
+      const links = document.querySelector('.nav-links');
+      const nav   = document.querySelector('.gothic-nav');
+      if (!btn || !links) return;
+
+      btn.addEventListener('click', function () {
+        const open = links.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      links.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') {
+          links.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('click', function (e) {
+        if (nav && !nav.contains(e.target) && links.classList.contains('open')) {
+          links.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

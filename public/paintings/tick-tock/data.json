@@ -1,0 +1,16 @@
+{
+  "id": "tick-tock",
+  "title": "Tick, Tock",
+  "subtitle": "Study",
+  "year": "2022",
+  "medium": "Acrylic & Coloured Pencil",
+  "dimensions": "A3",
+  "series": "Time Studies",
+  "tags": ["clock", "eyes", "blue", "glasses", "watching"],
+  "palette": { "accent": "#081228", "glow": "rgba(74,122,170,0.18)", "ice": "rgba(26,45,74,0.12)" },
+  "motifs": ["◎", "👁", "⧖"],
+  "images": { "main": "main.jpg", "details": [] },
+  "intro": "Eyes everywhere. A clock floats among them. The speech bubbles just say 'tick, tock' — like it's the only thing left to say.",
+  "story": "The figure in the foreground has been stripped of features — just glasses, a red brooch, a hooded shape. The hatching in the background is frantic. Every line feels like it was made quickly, like the watching couldn't be paused.",
+  "quote": "It was always the younger sister."
+}

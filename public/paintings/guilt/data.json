@@ -1,0 +1,16 @@
+{
+  "id": "guilt",
+  "title": "Guilt",
+  "subtitle": "Narrative work",
+  "year": "2022",
+  "medium": "Acrylic & Coloured Pencil",
+  "dimensions": "A3",
+  "series": "Narrative Works",
+  "tags": ["checkerboard", "blindfold", "brain", "clock", "speech bubbles"],
+  "palette": { "accent": "#101018", "glow": "rgba(60,60,100,0.15)", "ice": "rgba(30,30,60,0.12)" },
+  "motifs": ["💬", "⬡", "?"],
+  "images": { "main": "main.jpg", "details": [] },
+  "intro": "A speech bubble. A blindfolded figure. An exposed brain. A blue clock, floating.",
+  "story": "\"I'm sorry I made you feel like you're in a maze in your own mind.\" The background is black and white checkerboard. The second speech bubble asks \"what did I do wrong?\" — to nobody specific.",
+  "quote": "She would get used by everyone — even by the person she thought would understand the struggle."
+}

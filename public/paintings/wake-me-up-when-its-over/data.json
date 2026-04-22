@@ -1,0 +1,31 @@
+{
+  "id": "wake-me-up-when-its-over",
+  "title": "Wake Me Up When It's Over",
+  "subtitle": "Study",
+  "year": "2022",
+  "medium": "Coloured Pencil & Acrylic",
+  "dimensions": "A3",
+  "series": "Studies",
+  "tags": [
+    "fire",
+    "glasses",
+    "blue",
+    "dissociation"
+  ],
+  "palette": {
+    "accent": "#0a1535",
+    "glow": "rgba(74,122,170,0.2)",
+    "ice": "rgba(26,45,74,0.15)"
+  },
+  "motifs": [
+    "\ud83d\udd25",
+    "\ud83d\udd35"
+  ],
+  "images": {
+    "main": "main.jpg",
+    "details": []
+  },
+  "intro": "The head is on fire. The face below stays completely still.",
+  "story": "Orange and red flames erupt from the top of the skull while the face below stays completely still. Glasses. Bruises. A detached hand with a cigarette. A phone face-down on the floor. The blue around everything is electric, not peaceful \u2014 this blue shows up a lot in the work.",
+  "quote": "Many thoughts she thought were normal but really aren't."
+}

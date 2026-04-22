@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore a painting by Mario — artist statement, details, and story behind the work.">
+  <title>Mario — Painting</title>
+
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/painting.css">
+
+  <style>
+    :root { --painting-glow: rgba(74,122,170,0.12); }
+    .painting-ambient-bg {
+      background:
+        radial-gradient(ellipse 65% 55% at 40% 50%, rgba(74,122,170,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, #0a0810 0%, #050507 100%);
+      will-change: opacity;
+      transform: translateZ(0);
+      pointer-events: none;
+    }
+
+    .story-section,
+    .quote-section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity  1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .story-section.in-view,
+    .quote-section.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .painting-nav {
+      opacity: 0;
+      transition: opacity 0.9s ease 0.1s;
+    }
+    .painting-nav.in-view { opacity: 1; }
+  </style>
+
+  <script src="js/paintings-data.js"></script>
+  <script>
+    (function() {
+      var p = new URLSearchParams(location.search);
+      var id = p.get('id') || (typeof PAINTINGS !== 'undefined' ? PAINTINGS[0].id : '');
+      if (!id) return;
+
+      var idx = typeof PAINTINGS !== 'undefined'
+        ? PAINTINGS.findIndex(function(x){ return x.id === id; })
+        : -1;
+
+      if (idx === -1) return;
+
+      var painting = PAINTINGS[idx];
+      document.title = painting.title + ' — Mario';
+      document.documentElement.dataset.paintingIdx = idx;
+      document.documentElement.dataset.paintingId = id;
+
+      var preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.as = 'image';
+      preload.href = painting.image || ('paintings/' + id + '/main.jpg');
+      preload.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(preload);
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="painting-ambient-bg" id="ambient-bg"></div>
+  <div id="ambient-motifs" aria-hidden="true"></div>
+
+  <nav class="gothic-nav">
+    <a href="index.html" class="nav-logo">mariothesmart</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="exhibition.html">Exhibition</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="painting-page" id="painting-page">
+
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="sep" aria-hidden="true">·</span>
+      <a href="gallery.html">Gallery</a>
+      <span class="sep" aria-hidden="true">·</span>
+      <span class="current" id="bc-title"></span>
+    </nav>
+
+    <div class="painting-hero">
+      <div class="hero-frame-wrap">
+        <div class="hero-frame" id="hero-frame">
+          <div class="c tl"></div><div class="c tr"></div>
+          <div class="c bl"></div><div class="c br"></div>
+          <div class="hero-img-container" id="hero-img-container">
+            <div class="hero-skeleton" id="hero-skeleton"></div>
+            <img
+              class="hero-img"
+              id="hero-img"
+              src=""
+              alt=""
+              fetchpriority="high"
+              decoding="async"
+              loading="eager"
+              onclick="openZoom(this.src)"
+            >
+          </div>
+          <span class="zoom-hint">click to enlarge</span>
+        </div>
+      </div>
+
+      <div class="hero-panel" id="hero-panel">
+        <span class="panel-series" id="panel-series"></span>
+        <h1 class="panel-title" id="panel-title"></h1>
+        <p class="panel-subtitle" id="panel-subtitle"></p>
+        <div class="panel-rule"></div>
+        <div class="panel-meta" id="panel-meta"></div>
+        <p class="panel-intro" id="panel-intro" style="display:none;"></p>
+        <button class="panel-zoom-btn"
+                onclick="openZoom(document.getElementById('hero-img').src)">
+          View full size
+        </button>
+      </div>
+    </div>
+
+    <div id="detail-sections"></div>
+
+    <div class="story-section" id="story-section">
+      <span class="story-label">The Story</span>
+      <div class="story-rule"></div>
+      <div class="story-text" id="story-text"></div>
+    </div>
+
+    <div class="quote-section" id="quote-section">
+      <span class="quote-mark" aria-hidden="true">"</span>
+      <p class="quote-text-el" id="quote-text"></p>
+      <span class="quote-attr">— Mario</span>
+    </div>
+
+    <div class="painting-nav" id="painting-nav">
+      <a class="pnav-link" id="prev-link" href="#">← Previous</a>
+      <span class="pnav-count" id="pnav-count"></span>
+      <a class="pnav-link" id="next-link" href="#">Next →</a>
+    </div>
+
+  </div>
+
+  <div class="zoom-overlay" id="zoom-overlay" onclick="closeZoom()">
+    <button class="zoom-close" onclick="closeZoom()">Close</button>
+    <img id="zoom-img" src="" alt="Full size view" loading="lazy">
+  </div>
+
+  <script>
+    var paintingId = document.documentElement.dataset.paintingId || PAINTINGS[0].id;
+    var paintingIndex = parseInt(document.documentElement.dataset.paintingIdx, 10);
+
+    if (isNaN(paintingIndex) || paintingIndex === -1) {
+      location.replace('gallery.html');
+    }
+
+    var fb = PAINTINGS[paintingIndex];
+    var prev = PAINTINGS[(paintingIndex - 1 + PAINTINGS.length) % PAINTINGS.length];
+    var next = PAINTINGS[(paintingIndex + 1) % PAINTINGS.length];
+
+    var heroImg = document.getElementById('hero-img');
+    var heroSkeleton = document.getElementById('hero-skeleton');
+    var heroImgPath = fb.image || ('paintings/' + paintingId + '/main.jpg');
+
+    heroImg.alt = fb.title;
+
+    function showHeroLoaded() {
+      heroImg.classList.add('loaded');
+      if (heroSkeleton) heroSkeleton.classList.add('hidden');
+    }
+
+    function showHeroError() {
+      if (heroSkeleton) {
+        heroSkeleton.classList.add('hidden');
+      }
+      heroImg.style.opacity = '0.25';
+    }
+
+    heroImg.onload = showHeroLoaded;
+    heroImg.onerror = showHeroError;
+
+    heroImg.src = heroImgPath;
+
+    if (heroImg.complete && heroImg.naturalWidth > 0) {
+      showHeroLoaded();
+    }
+
+    // Mobile fallback: some mobile browsers don't reliably fire onload
+    // when src is set dynamically. Force the image visible after a short delay
+    // if it hasn't already been shown.
+    setTimeout(function() {
+      if (!heroImg.classList.contains('loaded') && heroImg.src && heroImg.src !== window.location.href) {
+        showHeroLoaded();
+      }
+    }, 800);
+
+    document.getElementById('bc-title').textContent = fb.title;
+    document.getElementById('panel-series').textContent = fb.series || '';
+    document.getElementById('panel-title').textContent = fb.title;
+    document.getElementById('panel-subtitle').textContent =
+      [fb.year, fb.medium].filter(Boolean).join(' · ');
+
+    function buildMetaRows(items) {
+      var el = document.getElementById('panel-meta');
+      el.innerHTML = '';
+      items.forEach(function(m) {
+        if (!m.value) return;
+        el.innerHTML +=
+          '<div class="panel-meta-row">' +
+            '<span class="panel-meta-label">' + m.label + '</span>' +
+            '<span class="panel-meta-value">' + m.value + '</span>' +
+          '</div>';
+      });
+    }
+
+    buildMetaRows([
+      { label: 'Year', value: fb.year },
+      { label: 'Medium', value: fb.medium },
+      { label: 'Size', value: fb.dimensions },
+      { label: 'Series', value: fb.series },
+    ]);
+
+    document.getElementById('prev-link').href = 'painting.html?id=' + prev.id;
+    document.getElementById('next-link').href = 'painting.html?id=' + next.id;
+    document.getElementById('pnav-count').textContent =
+      (paintingIndex + 1) + ' / ' + PAINTINGS.length;
+
+    (function() {
+      var container = document.getElementById('detail-sections');
+      var phLabels = ['01','02','03'];
+      var phNotes = [
+        'A closer detail — image coming soon.',
+        'Another fragment of this work.',
+        'A third detail, to be revealed.'
+      ];
+
+      for (var i = 0; i < 3; i++) {
+        var isFlip = i % 2 === 1;
+        var sec = document.createElement('div');
+        sec.className = 'detail-section' + (isFlip ? ' flip' : '') + ' scroll-reveal';
+        sec.innerHTML =
+          '<div class="detail-img-wrap">' +
+            '<div class="detail-placeholder">' +
+              '<div class="ph-c tl"></div><div class="ph-c tr"></div>' +
+              '<div class="ph-c bl"></div><div class="ph-c br"></div>' +
+              '<div class="detail-placeholder-inner">' +
+                '<span class="ph-num">' + phLabels[i] + '</span>' +
+                '<span class="ph-label">Detail image · Coming soon</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="detail-text">' +
+            '<span class="detail-eyebrow">Detail · ' + phLabels[i] + '</span>' +
+            '<p class="detail-ph-note">' + phNotes[i] + '</p>' +
+          '</div>';
+        container.appendChild(sec);
+      }
+    })();
+
+    fetch('paintings/' + paintingId + '/data.json')
+      .then(function(r) {
+        if (!r.ok) throw new Error('Missing data.json');
+        return r.json();
+      })
+      .then(function(data) {
+        enhancePage(data);
+      })
+      .catch(function() {
+        enhancePage(null);
+      });
+
+    function enhancePage(data) {
+      if (data) {
+        if (data.palette) {
+          document.getElementById('ambient-bg').style.background =
+            'radial-gradient(ellipse 65% 55% at 40% 50%, ' + data.palette.glow + ' 0%, transparent 65%),' +
+            'radial-gradient(ellipse 50% 40% at 60% 60%, ' + data.palette.ice + ' 0%, transparent 55%),' +
+            'radial-gradient(ellipse 100% 100% at 50% 50%, #0a0810 0%, #050507 100%)';
+
+          document.documentElement.style.setProperty('--painting-glow', data.palette.glow);
+        }
+
+        if (data.subtitle) {
+          document.getElementById('panel-subtitle').textContent = data.subtitle;
+        }
+
+        buildMetaRows([
+          { label: 'Year', value: data.year || fb.year },
+          { label: 'Medium', value: data.medium || fb.medium },
+          { label: 'Size', value: data.dimensions || fb.dimensions },
+          { label: 'Series', value: data.series || fb.series },
+        ]);
+
+        if (data.intro) {
+          var introEl = document.getElementById('panel-intro');
+          introEl.textContent = data.intro;
+          introEl.style.display = '';
+        }
+
+        if (data.images && data.images.details && data.images.details.length) {
+          var container = document.getElementById('detail-sections');
+          container.innerHTML = '';
+
+          data.images.details.forEach(function(detail, i) {
+            var sec = document.createElement('div');
+            sec.className = 'detail-section' + (i % 2 === 1 ? ' flip' : '') + ' scroll-reveal';
+            sec.innerHTML =
+              '<div class="detail-img-wrap">' +
+                '<img src="paintings/' + paintingId + '/' + detail.file + '"' +
+                     ' alt="' + (detail.caption || 'Detail') + '"' +
+                     ' loading="lazy" decoding="async" onclick="openZoom(this.src)">' +
+              '</div>' +
+              '<div class="detail-text">' +
+                '<span class="detail-eyebrow">Detail · ' + String(i + 1).padStart(2, '0') + '</span>' +
+                '<p class="detail-note">' + (detail.caption || '') + '</p>' +
+              '</div>';
+            container.appendChild(sec);
+          });
+
+          var remaining = Math.max(0, 3 - data.images.details.length);
+          var phLabels = ['01','02','03'];
+          var phNotes = ['A closer detail — image coming soon.','Another fragment.','A third detail.'];
+
+          for (var i = data.images.details.length; i < data.images.details.length + remaining; i++) {
+            var isFlip = i % 2 === 1;
+            var sec = document.createElement('div');
+            sec.className = 'detail-section' + (isFlip ? ' flip' : '') + ' scroll-reveal';
+            sec.innerHTML =
+              '<div class="detail-img-wrap"><div class="detail-placeholder">' +
+                '<div class="ph-c tl"></div><div class="ph-c tr"></div>' +
+                '<div class="ph-c bl"></div><div class="ph-c br"></div>' +
+                '<div class="detail-placeholder-inner">' +
+                  '<span class="ph-num">' + phLabels[i % 3] + '</span>' +
+                  '<span class="ph-label">Detail image · Coming soon</span>' +
+                '</div></div></div>' +
+              '<div class="detail-text">' +
+                '<span class="detail-eyebrow">Detail · ' + phLabels[i % 3] + '</span>' +
+                '<p class="detail-ph-note">' + phNotes[i % 3] + '</p>' +
+              '</div>';
+            container.appendChild(sec);
+          }
+        }
+
+        if (data.story) {
+          var storyEl = document.getElementById('story-text');
+          storyEl.innerHTML = data.story
+            .split('\n\n')
+            .filter(function(p){ return p.trim(); })
+            .map(function(p){ return '<p>' + p.trim() + '</p>'; })
+            .join('');
+        }
+
+        if (data.quote) {
+          document.getElementById('quote-text').textContent = data.quote;
+        }
+
+        if (data.motifs) {
+          spawnMotifs(data.motifs);
+        } else {
+          spawnMotifs(fb.motifs || ['👁']);
+        }
+      } else {
+        var story = (fb.description || '').replace(/<[^>]+>/g, '').trim();
+        if (story) {
+          document.getElementById('story-text').innerHTML =
+            story.split('\n\n')
+              .filter(function(p){ return p.trim(); })
+              .map(function(p){ return '<p>' + p.trim() + '</p>'; })
+              .join('');
+        }
+
+        if (fb.quote) {
+          document.getElementById('quote-text').textContent = fb.quote;
+        }
+
+        spawnMotifs(fb.motifs || ['👁']);
+      }
+
+      initScrollReveals();
+    }
+
+    function spawnMotifs(motifs) {
+      var cont = document.getElementById('ambient-motifs');
+      if (!cont || cont.childElementCount) return;
+
+      // SVG shapes — stable, device-consistent, no emoji rendering variance
+      var MOTIF_SVGS = {
+        // eye (👁 / bleeding eye)
+        '\ud83d\udc41': '<svg viewBox="0 0 36 24" fill="none"><path d="M2 12 C7 4,29 4,34 12 C29 20,7 20,2 12Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="18" cy="12" r="4.5" stroke="currentColor" stroke-width="0.9" fill="none"/><circle cx="18" cy="12" r="1.8" fill="currentColor" opacity="0.8"/></svg>',
+        // hourglass (⧖)
+        '\u29d6': '<svg viewBox="0 0 22 32" fill="none"><path d="M3 2L19 2L19 4C19 10 12 16 12 16C12 16 19 22 19 28L19 30L3 30L3 28C3 22 10 16 10 16C10 16 3 10 3 4Z" stroke="currentColor" stroke-width="1" fill="none"/><line x1="3" y1="2" x2="19" y2="2" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="30" x2="19" y2="30" stroke="currentColor" stroke-width="1.2"/></svg>',
+        // blood drop replacing speech bubble (💬)
+        '\ud83d\udcac': '<svg viewBox="0 0 20 30" fill="none"><path d="M10 2C10 2,18 13,18 19C18 24.5 14.4 28 10 28C5.6 28 2 24.5 2 19C2 13 10 2 10 2Z" stroke="currentColor" stroke-width="1" fill="none"/><path d="M10 10C10 10,15 16.5,15 20C15 22.8 12.8 25 10 25" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/></svg>',
+        // ring / circle (◎)
+        '\u25ce': '<svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="14" cy="14" r="5.5" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.5"/></svg>',
+        // blood drop (🩸)
+        '\ud83e\ude78': '<svg viewBox="0 0 20 30" fill="none"><path d="M10 2C10 2,18 13,18 19C18 24.5 14.4 28 10 28C5.6 28 2 24.5 2 19C2 13 10 2 10 2Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
+        // clock (🕰 / 🕐)
+        '\ud83d\udd70': '<svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="1" fill="none"/><line x1="14" y1="14" x2="14" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="14" y1="14" x2="19" y2="14" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><circle cx="14" cy="14" r="1.2" fill="currentColor" opacity="0.7"/></svg>',
+        '\ud83d\udd50': '<svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="1" fill="none"/><line x1="14" y1="14" x2="14" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="14" y1="14" x2="19" y2="14" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><circle cx="14" cy="14" r="1.2" fill="currentColor" opacity="0.7"/></svg>',
+        // glasses (👓)
+        '\ud83d\udc53': '<svg viewBox="0 0 40 26" fill="none"><rect x="2" y="6" width="16" height="14" rx="7" stroke="currentColor" stroke-width="1.1" fill="none"/><rect x="22" y="6" width="16" height="14" rx="7" stroke="currentColor" stroke-width="1.1" fill="none"/><line x1="18" y1="13" x2="22" y2="13" stroke="currentColor" stroke-width="1.1"/><line x1="2" y1="6" x2="0" y2="3" stroke="currentColor" stroke-width="1"/><line x1="38" y1="6" x2="40" y2="3" stroke="currentColor" stroke-width="1"/></svg>',
+        // fire (🔥)
+        '\ud83d\udd25': '<svg viewBox="0 0 22 30" fill="none"><path d="M11 2C11 2,18 10,18 18C18 23.5 15 28 11 28C7 28 4 23.5 4 18C4 14 6 11 6 11C6 11 7 16 10 16C10 16 8 10 11 2Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
+        // snake (🐍)
+        '\ud83d\udc0d': '<svg viewBox="0 0 30 30" fill="none"><path d="M5 24C5 24 8 28 13 24C18 20 12 14 17 10C22 6 26 10 26 10" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>',
+        // bird (🐦)
+        '\ud83d\udc26': '<svg viewBox="0 0 30 22" fill="none"><path d="M15 12C15 12 10 4 4 6C4 6 8 10 8 14C8 14 12 18 18 16C18 16 24 20 28 16C28 16 24 10 20 12C20 12 18 8 15 12Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
+        // hex / blue (🔵 / ⬡)
+        '\ud83d\udd35': '<svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="1" fill="none" opacity="0.7"/><circle cx="14" cy="14" r="5.5" fill="currentColor" opacity="0.35"/></svg>',
+        '\u2b21': '<svg viewBox="0 0 28 28" fill="none"><path d="M14 3L24 8.5V19.5L14 25L4 19.5V8.5Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
+        // question
+        '?': '<svg viewBox="0 0 20 28" fill="none"><path d="M5 8C5 5 7.5 3 10 3C12.5 3 15 5 15 8C15 11 10 13 10 16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><circle cx="10" cy="22" r="1.5" fill="currentColor" opacity="0.7"/></svg>',
+        // default fallback — blood drop
+        '_default': '<svg viewBox="0 0 20 30" fill="none"><path d="M10 2C10 2,18 13,18 19C18 24.5 14.4 28 10 28C5.6 28 2 24.5 2 19C2 13 10 2 10 2Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>'
+      };
+
+      for (var i = 0; i < 4; i++) {
+        var key = motifs[i % motifs.length];
+        var svgHTML = MOTIF_SVGS[key] || MOTIF_SVGS['_default'];
+        var el = document.createElement('div');
+        el.className = 'ambient-motif';
+        el.innerHTML = svgHTML;
+        var sz = 12 + Math.random() * 9; // px size
+        el.style.cssText =
+          'left:' + (5 + Math.random() * 90) + '%;' +
+          'bottom:' + (Math.random() * 80) + '%;' +
+          'width:' + sz + 'px;height:' + sz + 'px;' +
+          'color:rgba(216,207,196,0.55);' +
+          'animation-duration:' + (20 + Math.random() * 18) + 's;' +
+          'animation-delay:' + (Math.random() * 14) + 's;';
+        cont.appendChild(el);
+      }
+    }
+
+    function initScrollReveals() {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.scroll-reveal, .story-section, .quote-section, .painting-nav')
+        .forEach(function(el) { io.observe(el); });
+    }
+
+    function openZoom(src) {
+    	if (!src || src.indexOf('/') === -1) return;
+   	 document.getElementById('zoom-img').src = src;
+   	 document.getElementById('zoom-overlay').classList.add('active');
+   	 document.body.style.overflow = 'hidden';
+    	document.body.style.touchAction = 'none';
+    	var closeBtn = document.querySelector('.zoom-close');
+    	if (closeBtn) closeBtn.focus();
+      }
+
+    function closeZoom() {
+    	document.getElementById('zoom-overlay').classList.remove('active');
+    	document.body.style.overflow = '';
+   	document.body.style.touchAction = '';
+      }
+
+    window.openZoom = openZoom;
+    window.closeZoom = closeZoom;
+
+    document.addEventListener('keydown', function(e) {
+      var zoomActive = document.getElementById('zoom-overlay').classList.contains('active');
+      if (e.key === 'Escape') closeZoom();
+      if (e.key === 'ArrowLeft'  && !zoomActive) location.href = 'painting.html?id=' + prev.id;
+      if (e.key === 'ArrowRight' && !zoomActive) location.href = 'painting.html?id=' + next.id;
+    });
+  </script>
+  <script>
+    (function(){
+      var btn = document.getElementById("nav-hamburger");
+      var links = document.querySelector(".nav-links");
+      var nav  = document.querySelector(".gothic-nav");
+      if (!btn || !links) return;
+      btn.addEventListener("click", function(){
+        var open = links.classList.toggle("open");
+        btn.classList.toggle("open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      // Close drawer when a link is tapped
+      links.addEventListener("click", function(e){
+        if (e.target.tagName === "A") {
+          links.classList.remove("open");
+          btn.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+      // Close drawer when tapping outside the nav
+      document.addEventListener("click", function(e){
+        if (nav && !nav.contains(e.target) && links.classList.contains("open")) {
+          links.classList.remove("open");
+          btn.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

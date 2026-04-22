@@ -1,0 +1,450 @@
+/* ============================================================
+   GALLERY PAGE — COLOGNE CATHEDRAL × WOUND PALETTE
+   ============================================================ */
+
+/* ─── Gallery Header ─────────────────────────────────────── */
+.gallery-room {
+  min-height: 100vh;
+  padding: 8rem 2rem 6rem;
+  position: relative;
+}
+
+/* ─── Stone Wall Ambient ──────────────────────────────────── */
+.gallery-wall-left,
+.gallery-wall-right {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 80px;
+  pointer-events: none;
+  z-index: 1;
+}
+.gallery-wall-left  { left:0;  background:linear-gradient(to right, rgba(5,5,7,0.7), transparent); }
+.gallery-wall-right { right:0; background:linear-gradient(to left,  rgba(5,5,7,0.7), transparent); }
+
+/* Cathedral light rays */
+.light-ray {
+  position: fixed;
+  top: 0;
+  width: 1px; height: 45vh;
+  background: linear-gradient(to bottom, rgba(216,207,196,0.08), transparent);
+  pointer-events: none;
+  animation: ray-flicker 5s ease-in-out infinite;
+}
+@keyframes ray-flicker {
+  0%,100% { opacity:1; }
+  40%     { opacity:0.55; }
+  70%     { opacity:0.85; }
+}
+
+/* ============================================================
+   MASONRY CARD — THREE-LAYER ARCHITECTURE
+   ============================================================
+
+   Layer 1  .masonry-card        layout + filter visibility only
+   Layer 2  .masonry-motion      scroll-reveal + hover lift
+   Layer 3  .masonry-frame/img   surface polish, image scale
+
+   This separation ensures filtering never touches transform,
+   reveal never interferes with hover, and staying cards have
+   ZERO CSS overhead during a filter switch.
+   ============================================================ */
+
+/* ─── Layer 1: Outer card — layout + filter visibility ──── */
+.masonry-card {
+  break-inside: avoid;
+  margin-bottom: 2.5rem;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  /* No transition defined here by default. Filter system adds
+     transitions only via data-filter-state on cards that are
+     actually changing. Staying cards have zero overhead. */
+}
+
+/* ─── Filter Visibility System ───────────────────────────── */
+/* State is driven by classes added/removed by gallery.html JS.
+   Transition timing and class definitions live in the gallery.html
+   <style> block (page-scoped) so they load with the document.
+   These structural rules are kept here for clarity.
+   See gallery.html for: .card-hiding, .card-hidden, .card-showing */
+
+
+/* ─── Layer 2: Motion wrapper — reveal + hover lift ──────── */
+.masonry-motion {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity   1.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.masonry-motion.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  /* Swap to hover timing once reveal is done */
+  transition:
+    opacity   1.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.52s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: auto;
+}
+
+/* Hover lift fires on the motion wrapper through the outer card.
+   Because motion wrapper owns transform, there is no conflict
+   with filtering (opacity-only) or reveal (already finished). */
+.masonry-card:hover .masonry-motion.revealed {
+  transform: translateY(-7px);
+  transition: transform 0.52s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+
+/* ─── Layer 3a: Frame ────────────────────────────────────── */
+.masonry-frame {
+  position: relative;
+  background: linear-gradient(135deg, #1a1210, #2c2018, #1a1210);
+  border: 2px solid var(--rust);
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.9),
+    0 18px 50px rgba(0,0,0,0.75);
+  padding: 10px;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.masonry-frame::before,
+.masonry-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border-color: var(--rust-light);
+  border-style: solid;
+  z-index: 2;
+  transition: border-color 0.4s ease;
+}
+.masonry-frame::before { top:5px; left:5px; border-width:2px 0 0 2px; }
+.masonry-frame::after  { bottom:5px; right:5px; border-width:0 2px 2px 0; }
+
+.masonry-card:hover .masonry-frame {
+  border-color: var(--pallor);
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.9),
+    0 25px 65px rgba(0,0,0,0.85),
+    0 0 25px rgba(216,207,196,0.1),
+    0 0 60px rgba(74,122,170,0.08);
+}
+.masonry-card:hover .masonry-frame::before,
+.masonry-card:hover .masonry-frame::after { border-color: var(--bone-dim); }
+
+
+/* ─── Layer 3b: Canvas — image container ─────────────────── */
+.masonry-canvas {
+  position: relative;
+  overflow: hidden;
+}
+.masonry-canvas::before,
+.masonry-canvas::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: rgba(90,56,40,0.6);
+  border-style: solid;
+  z-index: 3;
+  pointer-events: none;
+}
+.masonry-canvas::before { bottom:4px; left:4px; border-width:0 0 1px 1px; }
+.masonry-canvas::after  { top:4px; right:4px; border-width:1px 1px 0 0; }
+
+
+/* ─── Layer 3c: Image — hover scale ─────────────────────── */
+.masonry-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(1.06) brightness(0.88);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+.masonry-card:hover .masonry-img {
+  filter: saturate(0.95) contrast(1.08) brightness(0.98);
+  transform: scale(1.04);
+}
+
+.masonry-placeholder {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  opacity: 0.6;
+  transition: transform 0.5s ease;
+}
+.masonry-card:hover .masonry-placeholder { transform: scale(1.03); }
+
+
+/* ─── Card Info ───────────────────────────────────────────── */
+.masonry-info {
+  background: var(--stone);
+  border: 1px solid var(--ash);
+  border-top: none;
+  padding: 0.8rem 1rem;
+  transition: border-color 0.4s ease;
+}
+.masonry-card:hover .masonry-info { border-color: var(--rust); }
+
+.masonry-title {
+  font-family: var(--font-title);
+  color: var(--pallor);
+  letter-spacing: 0.07em;
+  font-size: 0.88rem;
+}
+.masonry-meta {
+  font-family: var(--font-italic);
+  font-style: italic;
+  color: var(--bone-dim);
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+}
+.masonry-badge {
+  display: inline-block;
+  font-family: var(--font-title);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ice);
+  border: 1px solid var(--specter);
+  padding: 0.15rem 0.5rem;
+  margin-top: 0.5rem;
+}
+.masonry-tag-count {
+  float: right;
+  font-family: var(--font-title);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--blood);
+  line-height: 1;
+}
+
+
+/* ─── Gallery Filters ────────────────────────────────────── */
+.gallery-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+  padding: 0 2rem;
+}
+
+.filter-btn {
+  font-family: var(--font-title);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cold-grey);
+  background: transparent;
+  border: 1px solid var(--stone-light);
+  padding: 0.55rem 1.4rem;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease,
+              background 0.3s ease, box-shadow 0.3s ease;
+  clip-path: polygon(4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% 100%, 0% 100%, 0% 4px);
+}
+.filter-btn:hover,
+.filter-btn.active {
+  color: var(--pallor);
+  border-color: var(--rust);
+  background: rgba(90,56,40,0.1);
+  box-shadow: 0 0 12px rgba(192,32,48,0.15);
+}
+
+@media (max-width: 600px) {
+  .gallery-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem 0.75rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .gallery-filters::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 0.65rem;
+  }
+}
+
+
+/* ─── Gallery Header ─────────────────────────────────────── */
+.gallery-header {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.gallery-header-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 100%, rgba(26,45,74,0.25) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 50% 80%,  rgba(192,32,48,0.08) 0%, transparent 55%),
+    linear-gradient(to bottom, var(--void), var(--abyss));
+}
+.gallery-count {
+  font-family: var(--font-title);
+  font-size: 0.68rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ice);
+  margin-top: 1rem;
+  position: relative;
+}
+
+
+/* ─── painting-card kept intact for painting.html ────────── */
+.painting-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.55s cubic-bezier(0.23,1,0.32,1),
+              box-shadow 0.55s ease;
+}
+.painting-card:hover { transform: translateY(-10px) rotateX(2deg); z-index:10; }
+
+.painting-frame {
+  position: relative;
+  background: linear-gradient(135deg, #1a1210, #2c2018, #1a1210);
+  border: 2px solid var(--rust);
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.9),
+    0 18px 50px rgba(0,0,0,0.75);
+  padding: 14px;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.painting-frame::before, .painting-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border-color: var(--rust-light);
+  border-style: solid;
+  z-index: 2;
+  transition: border-color 0.4s;
+}
+.painting-frame::before { top:5px; left:5px; border-width:2px 0 0 2px; }
+.painting-frame::after  { bottom:5px; right:5px; border-width:0 2px 2px 0; }
+
+.painting-card:hover .painting-frame {
+  border-color: var(--pallor);
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.9),
+    0 25px 65px rgba(0,0,0,0.85),
+    0 0 25px rgba(216,207,196,0.1),
+    0 0 60px rgba(74,122,170,0.08);
+}
+.painting-card:hover .painting-frame::before,
+.painting-card:hover .painting-frame::after { border-color: var(--bone-dim); }
+
+.painting-inner-frame {
+  position: relative;
+  overflow: hidden;
+}
+.painting-inner-frame::before, .painting-inner-frame::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: rgba(90,56,40,0.6);
+  border-style: solid;
+  z-index: 3;
+  pointer-events: none;
+}
+.painting-inner-frame::before { bottom:4px; left:4px; border-width:0 0 1px 1px; }
+.painting-inner-frame::after  { top:4px; right:4px; border-width:1px 1px 0 0; }
+
+.painting-img {
+  width:100%; aspect-ratio:3/4; object-fit:cover; display:block;
+  filter: saturate(0.75) contrast(1.08) brightness(0.92);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+.painting-card:hover .painting-img {
+  filter: saturate(0.9) contrast(1.12) brightness(1.0);
+  transform: scale(1.04);
+}
+.painting-img-placeholder {
+  width:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:3.5rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.5s ease;
+}
+.painting-vignette {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.65) 100%);
+  pointer-events:none;
+}
+.painting-overlay {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:2rem 1.5rem 1.5rem;
+  background:linear-gradient(to top, rgba(5,5,7,0.97) 0%, transparent 100%);
+  transform:translateY(8px);
+  opacity:0;
+  transition:all 0.4s ease;
+}
+.painting-card:hover .painting-overlay { opacity:1; transform:translateY(0); }
+.painting-overlay-title {
+  font-family:var(--font-title);
+  font-size:0.9rem;
+  color:var(--pallor);
+  letter-spacing:0.1em;
+  margin-bottom:0.2rem;
+}
+.painting-overlay-year {
+  font-family:var(--font-italic);
+  font-style:italic;
+  font-size:0.8rem;
+  color:var(--cold-grey);
+}
+.painting-spotlight {
+  position:absolute; inset:-50%;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,30%), rgba(74,122,170,0.07) 0%, transparent 55%);
+  pointer-events:none; opacity:0;
+  transition:opacity 0.3s ease;
+}
+.painting-card:hover .painting-spotlight { opacity:1; }
+.painting-info {
+  background: var(--stone);
+  border: 1px solid var(--ash);
+  border-top: none;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+  transition: border-color 0.4s;
+}
+.painting-card:hover .painting-info { border-color:var(--rust); }
+.painting-title {
+  font-family:var(--font-title);
+  color:var(--pallor);
+  letter-spacing:0.07em;
+  font-size:0.95rem;
+  margin-bottom:0.3rem;
+}
+.painting-meta {
+  font-family:var(--font-italic);
+  font-style:italic;
+  color:var(--bone-dim);
+  margin-top:0.2rem;
+  font-size:0.82rem;
+}
+.painting-medium-badge {
+  display:inline-block;
+  font-family:var(--font-title);
+  font-size:0.6rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ice);
+  border:1px solid var(--specter);
+  padding:0.15rem 0.5rem;
+  margin-top:0.5rem;
+}

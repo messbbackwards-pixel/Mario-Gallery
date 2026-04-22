@@ -1,0 +1,552 @@
+/* ============================================================
+   GOTHIC GALLERY — COLOGNE CATHEDRAL × WOUNDED FIGURE PALETTE
+   ============================================================
+   Palette from the uploaded painting:
+   — Void black:     #050507  (deep background)
+   — Ash stone:      #2a2830  (cathedral stone / hood)
+   — Cold grey:      #4a4858  (shadows, mid-tones)
+   — Pallor flesh:   #b8a898  (the figure's ashen skin)
+   — Wound crimson:  #7a1520  (blood accents)
+   — Blood bright:   #c02030  (hot crimson)
+   — Specter blue:   #1a2d4a  (eerie left-side glow)
+   — Ice vein:       #4a7aaa  (lightning/nerve tendrils)
+   — Bone white:     #d8cfc4  (highlights, traced trees)
+   — Rust iron:      #5a3828  (frame wood, leather)
+   Cathedral DNA: Cologne Dom
+   — Pointed lancet arches
+   — Stone course + rib vault textures
+   — Tracery ornaments
+   — Flying buttress shadow lines
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --void:          #050507;
+  --abyss:         #090910;
+  --stone-deep:    #111118;
+  --stone:         #1a1a22;
+  --stone-mid:     #22222c;
+  --stone-light:   #2a2836;
+  --ash:           #363644;
+  --cold-grey:     #4a4858;
+  --pallor:        #b8a898;
+  --bone:          #d8cfc4;
+  --bone-dim:      #7a7068;
+  --wound:         #7a1520;
+  --blood:         #a01828;
+  --blood-bright:  #c02030;
+  --specter:       #1a2d4a;
+  --ice:           #4a7aaa;
+  --ice-bright:    #7aaddd;
+  --rust:          #5a3828;
+  --rust-light:    #7a5038;
+
+  /* Backwards-compat aliases for existing HTML */
+  --black:         var(--void);
+  --deep:          var(--abyss);
+  --surface:       var(--stone);
+  --surface-2:     var(--stone-mid);
+  --border:        var(--ash);
+  --border-glow:   var(--ice);
+  --gold:          var(--bone);
+  --gold-light:    #eee8e0;
+  --gold-dim:      var(--bone-dim);
+  --crimson:       var(--wound);
+  --crimson-glow:  var(--blood-bright);
+  --purple:        var(--specter);
+  --purple-light:  var(--ice);
+  --white:         var(--bone);
+  --white-dim:     var(--pallor);
+  --mist:          rgba(74,120,170,0.05);
+
+  --font-display: 'Cinzel Decorative', serif;
+  --font-title:   'Cinzel', serif;
+  --font-body:    'Crimson Text', serif;
+  --font-italic:  'IM Fell English', serif;
+
+  --transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+
+  --glow-gold:    0 0 16px rgba(216,207,196,0.22), 0 0 45px rgba(216,207,196,0.07);
+  --glow-bone:    0 0 16px rgba(216,207,196,0.22), 0 0 45px rgba(216,207,196,0.07);
+  --glow-blood:   0 0 16px rgba(192,32,48,0.5),   0 0 45px rgba(192,32,48,0.18);
+  --glow-ice:     0 0 16px rgba(74,122,170,0.4),   0 0 45px rgba(74,122,170,0.12);
+  --glow-purple:  var(--glow-ice);
+  --glow-red:     var(--glow-blood);
+}
+
+/* ─── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background-color: var(--void);
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Film-grain noise only — no masonry grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.22;
+}
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--abyss); }
+::-webkit-scrollbar-thumb { background: var(--ash); }
+::-webkit-scrollbar-thumb:hover { background: var(--cold-grey); }
+
+::selection { background: rgba(192,32,48,0.3); color: var(--bone); }
+
+/* ─── Navigation — Refined & Luxurious ──────────────────── */
+nav.gothic-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 0 3.5rem;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom,
+    rgba(5,5,7,0.72) 0%,
+    rgba(5,5,7,0.38) 62%,
+    rgba(5,5,7,0.0) 100%
+  );
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* Hairline separator — almost invisible, just a whisper */
+nav.gothic-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(216,207,196,0.06) 30%,
+    rgba(160,24,40,0.12) 50%,
+    rgba(216,207,196,0.06) 70%,
+    transparent 100%
+  );
+}
+
+/* Logo / Brand — typographic, not icon-based */
+nav.gothic-nav .nav-logo {
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--bone);
+  text-decoration: none;
+  letter-spacing: 0.32em;
+  text-transform: lowercase;
+  opacity: 0.92;
+  transition: opacity 0.5s ease, letter-spacing 0.5s ease;
+  position: relative;
+}
+
+nav.gothic-nav .nav-logo::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--blood), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+
+nav.gothic-nav .nav-logo:hover {
+  opacity: 1;
+  letter-spacing: 0.38em;
+}
+nav.gothic-nav .nav-logo:hover::after { transform: scaleX(1); }
+
+/* Nav links */
+nav.gothic-nav .nav-links {
+  display: flex;
+  gap: 3rem;
+  list-style: none;
+  align-items: center;
+}
+
+nav.gothic-nav .nav-links a {
+  font-family: var(--font-title);
+  font-size: 0.76rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  text-decoration: none;
+  transition: color 0.4s ease;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+/* Elegant expanding underline — not just a static bar */
+nav.gothic-nav .nav-links a::before {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 100%; height: 1px;
+  background: var(--blood);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  opacity: 0.7;
+}
+
+nav.gothic-nav .nav-links a:hover {
+  color: var(--pallor);
+}
+nav.gothic-nav .nav-links a:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Active: a small blood dot above + full line — not just an underline */
+nav.gothic-nav .nav-links a.active {
+  color: var(--bone);
+}
+nav.gothic-nav .nav-links a.active::before {
+  transform: scaleX(1);
+  transform-origin: left;
+  background: linear-gradient(to right, var(--blood), var(--ice));
+  opacity: 0.9;
+}
+nav.gothic-nav .nav-links a.active::after {
+  content: '';
+  position: absolute;
+  top: -6px; left: 50%;
+  transform: translateX(-50%);
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--blood);
+  box-shadow: 0 0 6px rgba(160,24,40,0.8);
+}
+
+/* ─── Gothic Divider ─────────────────────────────────────── */
+.gothic-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 3rem auto;
+  max-width: 500px;
+}
+
+.gothic-divider::before,
+.gothic-divider::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--ash), transparent);
+}
+
+.gothic-divider .ornament {
+  color: var(--blood);
+  font-size: 1.1rem;
+  text-shadow: var(--glow-blood);
+}
+
+/* ─── Buttons ───────────────────────────────────────────── */
+.btn-gothic {
+  display: inline-block;
+  font-family: var(--font-title);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pallor);
+  border: 1px solid var(--ash);
+  padding: 1rem 2.5rem;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  background: transparent;
+  cursor: pointer;
+  /* Lancet-tip clipping on top corners */
+}
+
+.btn-gothic::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg,
+    rgba(192,32,48,0.07) 0%, transparent 50%,
+    rgba(74,122,170,0.05) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-gothic::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--blood), transparent);
+  transform: scaleX(0);
+  transition: transform 0.35s ease;
+}
+
+.btn-gothic:hover {
+  color: var(--bone);
+  border-color: var(--cold-grey);
+  box-shadow: var(--glow-ice);
+}
+.btn-gothic:hover::before { opacity: 1; }
+.btn-gothic:hover::after  { transform: scaleX(1); }
+
+/* ─── Section Titles ─────────────────────────────────────── */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2.8rem);
+  color: var(--bone);
+  text-align: center;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 40px rgba(216,207,196,0.12);
+}
+
+.section-subtitle {
+  font-family: var(--font-italic);
+  font-style: italic;
+  color: var(--pallor);
+  text-align: center;
+  font-size: 1.05rem;
+  margin-bottom: 4rem;
+  opacity: 0.75;
+}
+
+/* ─── Candle Flame ───────────────────────────────────────── */
+@keyframes flicker {
+  0%,100% { opacity:1;    transform:scale(1)    translateY(0)    skewX(0deg); }
+  20%     { opacity:0.82; transform:scale(0.96) translateY(-1px) skewX(-2deg); }
+  50%     { opacity:0.94; transform:scale(1.03) translateY(-2px) skewX(1deg); }
+  75%     { opacity:0.87; transform:scale(0.98) translateY(-1px) skewX(-1deg); }
+}
+.candle-flame { display:inline-block; animation:flicker 2.8s ease-in-out infinite; }
+
+/* ─── Particles ─────────────────────────────────────────── */
+.particles-container { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+
+.particle {
+  position: absolute;
+  width: 1.5px; height: 1.5px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-particle linear infinite;
+}
+.particle:nth-child(odd)  { background: var(--cold-grey); }
+.particle:nth-child(even) { background: var(--ice); }
+.particle:nth-child(3n)   { background: var(--blood); width:1px; height:1px; }
+
+@keyframes float-particle {
+  0%   { opacity:0; transform:translateY(100vh) rotate(0deg); }
+  8%   { opacity:0.5; }
+  92%  { opacity:0.12; }
+  100% { opacity:0; transform:translateY(-30px) rotate(540deg); }
+}
+
+/* ─── Fog ────────────────────────────────────────────────── */
+.fog-layer {
+  position: absolute;
+  bottom: 0; left: -50%;
+  width: 200%; height: 220px;
+  background: radial-gradient(ellipse at center,
+    rgba(26,45,74,0.2) 0%, rgba(74,122,170,0.06) 40%, transparent 70%
+  );
+  animation: fog-drift 22s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.fog-layer:nth-child(2) {
+  height: 140px;
+  animation-duration: 16s;
+  animation-direction: alternate-reverse;
+  opacity: 0.5;
+  background: radial-gradient(ellipse at center, rgba(192,32,48,0.07) 0%, transparent 70%);
+}
+@keyframes fog-drift {
+  0%   { transform: translateX(-8%) scaleY(1); }
+  100% { transform: translateX(8%) scaleY(1.4); }
+}
+
+/* ─── Animations ─────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity:0; } to { opacity:1; }
+}
+
+.animate-up { animation:fade-up 1.1s cubic-bezier(0.22,1,0.36,1) forwards; opacity:0; }
+.animate-in { animation:fade-in 1.1s ease forwards; opacity:0; }
+.delay-1    { animation-delay:0.3s; }
+.delay-2    { animation-delay:0.65s; }
+.delay-3    { animation-delay:1.0s; }
+.delay-4    { animation-delay:1.35s; }
+
+/* Scroll reveal — slow, cinematic, premium */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity  1.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Gothic Frame ───────────────────────────────────────── */
+.gothic-frame {
+  position: relative;
+  border: 1px solid var(--ash);
+  background: var(--stone);
+  transition: var(--transition);
+}
+.gothic-frame::before, .gothic-frame::after {
+  content:'·'; position:absolute;
+  color:var(--cold-grey); font-size:0.55rem;
+  transition:var(--transition);
+}
+.gothic-frame::before { top:-6px; left:-6px; }
+.gothic-frame::after  { bottom:-6px; right:-6px; }
+.gothic-frame:hover   { border-color:var(--cold-grey); box-shadow:var(--glow-ice); }
+.gothic-frame:hover::before,
+.gothic-frame:hover::after { color:var(--ice); }
+
+
+
+/* ─── Footer ─────────────────────────────────────────────── */
+footer.gothic-footer {
+  background: var(--abyss);
+  border-top: 1px solid var(--ash);
+  padding: 4rem 3rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+footer.gothic-footer::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image: repeating-linear-gradient(90deg,
+    transparent 0px, transparent 119px,
+    rgba(200,200,220,0.012) 119px, rgba(200,200,220,0.012) 120px
+  );
+  pointer-events:none;
+}
+footer.gothic-footer .footer-logo {
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--bone);
+  letter-spacing: 0.32em;
+  text-transform: lowercase;
+  opacity: 0.92;
+  display: inline-block;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+footer.gothic-footer p {
+  font-family:var(--font-italic);
+  font-style:italic;
+  color:var(--cold-grey);
+  font-size:0.88rem;
+}
+
+/* Hide hamburger on desktop */
+.nav-hamburger { display: none; }
+
+/* ─── Mobile Navigation ──────────────────────────────────── */
+@media (max-width: 768px) {
+  nav.gothic-nav {
+    padding: 0 1.5rem;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1200;
+  }
+
+  /* Dropdown: slides in from above using opacity + translateY.
+     Anchored to the nav bar (position:absolute, top:100%)
+     rather than the viewport (position:fixed) so it scrolls
+     with the nav and doesn't cover unrelated content. */
+  nav.gothic-nav .nav-links {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(5, 5, 7, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--ash);
+    padding: 0.75rem 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 1201;
+  }
+  nav.gothic-nav .nav-links.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  nav.gothic-nav .nav-links li {
+    width: 100%;
+    list-style: none;
+  }
+  nav.gothic-nav .nav-links a {
+    display: block;
+    width: 100%;
+    padding: 0.95rem 1.2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-align: left;
+  }
+
+  /* Hamburger button */
+  .nav-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1202;
+    position: relative;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--bone);
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1),
+                opacity 0.25s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger:hover span { background: var(--pallor); }
+
+  /* Animate to × when open */
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+}

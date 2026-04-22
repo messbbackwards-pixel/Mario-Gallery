@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mario — paintings that trace the edge between thought and obsession. An Egyptian artist's ongoing body of work.">
+  <title>Mario — Home</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* ─── Entry Scene ─────────────────────────────────── */
+    .entry-scene {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .entry-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 100%, rgba(26,45,74,0.32) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 30% 60%,  rgba(74,122,170,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 25% at 50% 75%,  rgba(120,21,32,0.1) 0%, transparent 50%),
+        #050507;
+    }
+
+    /* ─── Background Clock ────────────────────────────── */
+    .bg-clock {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(76vw, 660px);
+      height: min(76vw, 660px);
+      pointer-events: none;
+      opacity: 0.20;
+      filter: blur(0.12px);
+    }
+
+     
+     @media (max-width: 768px) {
+      .bg-clock {
+    	width: min(88vw, 520px);
+    	height: min(88vw, 520px);
+    	top: 35%;
+    }
+}
+
+    /* ─── Floating motifs — her recurring symbols ─────── */
+    .float-motif {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: motif-drift linear infinite;
+    }
+    .float-motif svg { width: 100%; height: 100%; display: block; }
+    @keyframes motif-drift {
+      0%   { opacity: 0;    transform: translateY(0) rotate(0deg); }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.08; }
+      100% { opacity: 0;    transform: translateY(-120px) rotate(8deg); }
+    }
+
+    /* ─── Dust motes ──────────────────────────────────── */
+    .stars { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+    .star  {
+      position:absolute; background:var(--cold-grey); border-radius:50%;
+      animation:twinkle ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%,100% { opacity:0.06; } 50% { opacity:0.28; }
+    }
+
+    /* ─── Entry Content ───────────────────────────────── */
+    .entry-content { position:relative; z-index:10; padding:2rem; }
+
+    .entry-handle {
+      font-family: var(--font-title);
+      font-size: 0.62rem;
+      letter-spacing: 0.52em;
+      text-transform: uppercase;
+      color: var(--ice);
+      margin-bottom: 1.6rem;
+      display: block;
+      animation: fade-up 1s ease 0.4s forwards;
+      opacity: 0;
+    }
+
+    .entry-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 7rem);
+      color: var(--bone);
+      line-height: 1.0;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 60px rgba(216,207,196,0.1), 0 0 120px rgba(74,122,170,0.05);
+      margin-bottom: 1.2rem;
+      animation: fade-up 1.1s ease 0.7s forwards;
+      opacity: 0;
+    }
+
+    /* small clarification under the main title */
+    .entry-clarification {
+      font-family: var(--font-italic);
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--bone-dim);
+      display: block;
+      margin-bottom: 0.6rem;
+      animation: fade-in 1s ease 1.0s forwards;
+      opacity: 0;
+      letter-spacing: 0.04em;
+    }
+
+    .entry-subtitle {
+      font-family: var(--font-italic);
+      font-style: italic;
+      font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+      color: var(--pallor);
+      opacity: 0;
+      animation: fade-up 1s ease 1.1s forwards;
+      margin-bottom: 3.2rem;
+    }
+
+    .entry-rule {
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--blood), transparent);
+      margin: 0 auto 2.8rem;
+      opacity: 0;
+      animation: fade-in 1s ease 1.3s forwards;
+    }
+
+    .entry-cta {
+      display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;
+      animation:fade-up 1s ease 1.5s forwards; opacity:0;
+    }
+
+    /* ─── Scroll Indicator ────────────────────────────── */
+    .scroll-indicator {
+      position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:0.6rem;
+      animation:fade-in 1s ease 2.2s forwards; opacity:0;
+    }
+    .scroll-indicator span {
+      font-family:var(--font-title); font-size:0.56rem;
+      letter-spacing:0.45em; text-transform:uppercase; color:var(--bone-dim);
+    }
+    .scroll-arrow {
+      width:1px; height:46px;
+      background:linear-gradient(to bottom, var(--bone-dim), transparent);
+      animation:scroll-pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes scroll-pulse {
+      0%,100%{transform:scaleY(1);opacity:0.8;} 50%{transform:scaleY(0.55);opacity:0.25;}
+    }
+
+    /* ─── Featured Section ────────────────────────────── */
+    .featured-section {
+      padding: 9rem 3rem;
+      position: relative;
+      background: var(--void);
+    }
+    .featured-section::before {
+      content:''; position:absolute; top:0; left:10%; right:10%;
+      height:1px;
+      background:linear-gradient(to right, transparent, var(--ash), transparent);
+    }
+
+    .featured-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:2.5rem;
+      max-width:1050px; margin:5rem auto 0;
+    }
+    @media (max-width:1000px) { .featured-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:600px)  { .featured-grid { grid-template-columns:1fr; } }
+
+    .featured-card {
+      display:block; text-decoration:none; cursor:pointer;
+      opacity:0; transform:translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease, box-shadow 0.4s ease;
+    }
+    .featured-card.in-view { opacity:1; transform:translateY(0); }
+    .featured-card:hover   { transform:translateY(-10px) !important; }
+
+    .featured-img {
+      width:100%; aspect-ratio:3/4; overflow:hidden;
+      border:1px solid var(--ash);
+      transition:border-color 0.4s, box-shadow 0.4s;
+    }
+    .featured-img img {
+      width:100%; height:100%; object-fit:cover;
+      filter:saturate(0.78) contrast(1.06) brightness(0.88);
+      transition:filter 0.5s, transform 0.5s;
+      display:block;
+    }
+    .featured-card:hover .featured-img { border-color:var(--rust); box-shadow:0 0 30px rgba(74,122,170,0.1); }
+    .featured-card:hover .featured-img img { filter:saturate(0.95) contrast(1.08) brightness(0.98); transform:scale(1.04); }
+
+    .featured-label {
+      padding:1rem 1.2rem; background:var(--stone);
+      border:1px solid var(--ash); border-top:none;
+      transition:border-color 0.4s;
+    }
+    .featured-card:hover .featured-label { border-color:var(--rust); }
+
+    .featured-label-title {
+      font-family:var(--font-title); font-size:0.82rem;
+      color:var(--pallor); letter-spacing:0.08em; display:block; margin-bottom:0.2rem;
+    }
+    .featured-label-year {
+      font-family:var(--font-italic); font-style:italic;
+      font-size:0.76rem; color:var(--bone-dim);
+    }
+
+    .featured-card:nth-child(1) { transition-delay:0s; }
+    .featured-card:nth-child(2) { transition-delay:0.15s; }
+    .featured-card:nth-child(3) { transition-delay:0.3s; }
+
+    /* ─── Artist statement strip ──────────────────────── */
+    .statement-strip {
+      padding: 6rem 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      opacity:0; transform:translateY(25px);
+      transition:opacity 1s ease, transform 1s ease;
+    }
+    .statement-strip.in-view { opacity:1; transform:translateY(0); }
+
+    /* Floating speech bubble — her signature element */
+    .speech-bubble {
+      display: inline-block;
+      position: relative;
+      border: 1px solid var(--ash);
+      background: var(--stone);
+      padding: 1.4rem 2rem;
+      margin-bottom: 1.8rem;
+      max-width: 580px;
+    }
+    /* The little tail pointing down-left */
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px; left: 32px;
+      width: 0; height: 0;
+      border-left: 10px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 10px solid var(--ash);
+    }
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -8px; left: 33px;
+      width: 0; height: 0;
+      border-left: 9px solid transparent;
+      border-right: 3px solid transparent;
+      border-top: 9px solid var(--stone);
+      z-index: 1;
+    }
+
+    .speech-bubble p {
+      font-family: var(--font-italic);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--pallor);
+      line-height: 1.7;
+    }
+
+    .statement-attribution {
+      font-family: var(--font-title);
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--bone-dim);
+      margin-top: 1rem;
+    }
+
+    /* ─── Section head scroll trigger ────────────────── */
+    .section-head {
+      text-align:center; opacity:0; transform:translateY(25px);
+      transition:opacity 0.9s ease, transform 0.9s ease;
+    }
+    .section-head.in-view { opacity:1; transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+  <nav class="gothic-nav">
+    <a href="index.html" class="nav-logo">mariothesmart</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="exhibition.html">Exhibition</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── Entry Scene ─────────────────────────────────── -->
+  <section class="entry-scene">
+    <div class="entry-bg"></div>
+    <div class="stars" id="stars"></div>
+    <div class="particles-container" id="particles"></div>
+    <div class="fog-layer"></div>
+    <div class="fog-layer"></div>
+
+    <!-- Background Clock (her most recurring motif) -->
+    <svg class="bg-clock" id="bg-clock" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="clock-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="1.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <radialGradient id="flame-core" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#fff6d6"/>
+      <stop offset="55%" stop-color="#ffd27a"/>
+      <stop offset="100%" stop-color="#ff8a3d"/>
+    </radialGradient>
+
+    <radialGradient id="flame-halo" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="rgba(255,180,90,0.55)"/>
+      <stop offset="100%" stop-color="rgba(255,120,40,0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- outer rings -->
+  <circle cx="200" cy="200" r="196" fill="none" stroke="#d8cfc4" stroke-width="0.65" opacity="0.42"/>
+  <circle cx="200" cy="200" r="188" fill="none" stroke="#d8cfc4" stroke-width="0.35" opacity="0.28"/>
+  <circle cx="200" cy="200" r="176" fill="none" stroke="#d8cfc4" stroke-width="0.45" opacity="0.22"/>
+  <circle cx="200" cy="200" r="152" fill="none" stroke="#d8cfc4" stroke-width="0.3" opacity="0.12"/>
+  <circle cx="200" cy="200" r="96"  fill="none" stroke="#d8cfc4" stroke-width="0.35" opacity="0.18"/>
+
+  <!-- marks / numerals -->
+  <g id="ticks" stroke="#d8cfc4" opacity="0.38"></g>
+  <g id="numerals"
+     font-family="'Cinzel Decorative', serif"
+     font-size="13"
+     fill="#d8cfc4"
+     opacity="0.26"
+     text-anchor="middle"
+     dominant-baseline="middle"></g>
+
+  <!-- candle hands -->
+  <path id="hour-candle" d="" fill="none" stroke="#e7ddd1" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#clock-glow)"/>
+  <path id="minute-candle" d="" fill="none" stroke="#e7ddd1" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#clock-glow)"/>
+
+  <!-- wax drips -->
+  <path id="hour-drip-1" d="" fill="none" stroke="#e7ddd1" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
+  <path id="hour-drip-2" d="" fill="none" stroke="#e7ddd1" stroke-width="1.5" stroke-linecap="round" opacity="0.82"/>
+  <path id="minute-drip-1" d="" fill="none" stroke="#e7ddd1" stroke-width="1.7" stroke-linecap="round" opacity="0.9"/>
+  <path id="minute-drip-2" d="" fill="none" stroke="#e7ddd1" stroke-width="1.15" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- flames -->
+  <ellipse id="hour-flame-halo" cx="200" cy="120" rx="8" ry="14" fill="url(#flame-halo)" opacity="0.8"/>
+  <path id="hour-flame" d="" fill="url(#flame-core)" filter="url(#clock-glow)"/>
+
+  <ellipse id="minute-flame-halo" cx="200" cy="70" rx="6.5" ry="11" fill="url(#flame-halo)" opacity="0.72"/>
+  <path id="minute-flame" d="" fill="url(#flame-core)" filter="url(#clock-glow)"/>
+
+  <!-- center -->
+  <circle cx="200" cy="200" r="4.5" fill="#d8cfc4" opacity="0.7"/>
+  <circle cx="200" cy="200" r="2" fill="#a01828" opacity="0.9"/>
+</svg>
+
+    <!-- Floating motifs: her speech bubbles, third eye -->
+    <div id="floating-motifs"></div>
+
+    <div class="entry-content">
+      <h1 class="entry-title">Mario</h1>
+      <span class="entry-clarification">also known as Mariothesmart. don't ask.</span>
+      <p class="entry-subtitle">
+        paintings made between midnight and 3am,<br>
+        mostly about things I couldn't say out loud.
+      </p>
+      <div class="entry-rule"></div>
+      <div class="entry-cta">
+        <a href="gallery.html" class="btn-gothic">Enter the Gallery</a>
+        <a href="about.html" class="btn-gothic" style="border-color:var(--specter);color:var(--ice);">About</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ─── Featured Works ──────────────────────────────── -->
+  <section class="featured-section">
+    <div class="section-head" id="section-head-1">
+      <h2 class="section-title">Recent Works</h2>
+      <p class="section-subtitle"><em>A few things she made</em></p>
+    </div>
+
+    <div class="featured-grid" id="featured-grid"></div>
+
+    <div style="text-align:center; margin-top:4rem;
+                opacity:0; transform:translateY(20px);
+                transition:opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;"
+         id="gallery-link-wrap">
+      <a href="gallery.html" class="btn-gothic">See Everything</a>
+    </div>
+  </section>
+
+  <!-- ─── Artist Statement as Speech Bubble ───────────── -->
+  <section style="padding:4rem 2rem 6rem; background:var(--void); border-top:1px solid var(--ash);">
+    <div class="statement-strip" id="statement-strip">
+      <div class="speech-bubble">
+        <p>If I were able to say the meanings, I wouldn't have painted them. I only feel them. That's the whole point.</p>
+      </div>
+      <div class="statement-attribution">— Mario, 2026</div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ──────────────────────────────────────── -->
+  <footer class="gothic-footer">
+    <span class="footer-logo">mariothesmart</span>
+    <div class="gothic-divider" style="margin:1.5rem auto;"><div class="ornament">—</div></div>
+    <p><em>All works copyright © Mario. Do not reproduce without permission.</em></p>
+  </footer>
+
+  <script src="js/paintings-data.js"></script>
+  <script src="js/gallery.js"></script>
+  <script>
+    /* ─── Melting Clock (real time) ───────────────────── */
+    /* ─── Candle Clock (real time, no seconds hand) ───────────────────── */
+    const R = 183, cx = 200, cy = 200;
+    const ticksG = document.getElementById('ticks');
+    const numG = document.getElementById('numerals');
+
+    for (let i = 0; i < 60; i++) {
+      const angle = (i / 60) * Math.PI * 2 - Math.PI / 2;
+      const isHour = i % 5 === 0;
+      const inner = R - (isHour ? 14 : 6);
+
+      const x1 = cx + Math.cos(angle) * inner;
+      const y1 = cy + Math.sin(angle) * inner;
+      const x2 = cx + Math.cos(angle) * R;
+      const y2 = cy + Math.sin(angle) * R;
+
+      const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', x1);
+      l.setAttribute('y1', y1);
+      l.setAttribute('x2', x2);
+      l.setAttribute('y2', y2);
+      l.setAttribute('stroke-width', isHour ? '1.25' : '0.45');
+      l.setAttribute('opacity', isHour ? '0.6' : '0.35');
+      ticksG.appendChild(l);
+    }
+
+    const romans = ['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+    romans.forEach((r, i) => {
+      const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+      const x = cx + Math.cos(angle) * 160;
+      const y = cy + Math.sin(angle) * 160;
+
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', x);
+      t.setAttribute('y', y);
+      t.textContent = r;
+      numG.appendChild(t);
+    });
+
+    function polarPoint(deg, len) {
+      const rad = (deg - 90) * Math.PI / 180;
+      return {
+        x: cx + Math.cos(rad) * len,
+        y: cy + Math.sin(rad) * len,
+        rad
+      };
+    }
+
+    function makeCandlePath(deg, len, tail, wobble) {
+      const start = polarPoint(deg, -tail);
+      const tip = polarPoint(deg, len);
+
+      const midLen = len * 0.6;
+      const mid = polarPoint(deg, midLen);
+
+      const px = -Math.sin(tip.rad);
+      const py = Math.cos(tip.rad);
+
+      const c1x = cx + Math.cos(tip.rad) * (len * 0.24) + px * wobble * 0.35;
+      const c1y = cy + Math.sin(tip.rad) * (len * 0.24) + py * wobble * 0.35;
+
+      const c2x = mid.x + px * wobble;
+      const c2y = mid.y + py * wobble;
+
+      return {
+        d: `
+          M ${start.x.toFixed(2)} ${start.y.toFixed(2)}
+          L ${cx.toFixed(2)} ${cy.toFixed(2)}
+          C ${c1x.toFixed(2)} ${c1y.toFixed(2)},
+            ${c2x.toFixed(2)} ${c2y.toFixed(2)},
+            ${tip.x.toFixed(2)} ${tip.y.toFixed(2)}
+        `,
+        tip,
+        px,
+        py
+      };
+    }
+
+    function makeDripPath(baseX, baseY, length, sway) {
+      return `
+        M ${baseX.toFixed(2)} ${baseY.toFixed(2)}
+        Q ${(baseX + sway * 0.45).toFixed(2)} ${(baseY + length * 0.45).toFixed(2)},
+          ${(baseX + sway).toFixed(2)} ${(baseY + length).toFixed(2)}
+      `;
+    }
+
+    function makeFlamePath(x, y, size, flickerX, flickerY) {
+      const topX = x + flickerX;
+      const topY = y - size - flickerY;
+
+      const leftX = x - size * 0.48;
+      const leftY = y - size * 0.2;
+
+      const rightX = x + size * 0.48;
+      const rightY = y - size * 0.2;
+
+      const bottomX = x;
+      const bottomY = y + size * 0.28;
+
+      return `
+        M ${bottomX.toFixed(2)} ${bottomY.toFixed(2)}
+        C ${(x - size * 0.7).toFixed(2)} ${(y + size * 0.05).toFixed(2)},
+          ${leftX.toFixed(2)} ${leftY.toFixed(2)},
+          ${topX.toFixed(2)} ${topY.toFixed(2)}
+        C ${rightX.toFixed(2)} ${rightY.toFixed(2)},
+          ${(x + size * 0.7).toFixed(2)} ${(y + size * 0.05).toFixed(2)},
+          ${bottomX.toFixed(2)} ${bottomY.toFixed(2)}
+      `;
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const t = Date.now() * 0.001;
+
+      const m = now.getMinutes() + now.getSeconds() / 60;
+      const h = (now.getHours() % 12) + m / 60;
+
+      const hourDeg = (h / 12) * 360;
+      const minuteDeg = (m / 60) * 360;
+
+      const hourWobble = Math.sin(t * 0.55) * 4.5;
+      const minuteWobble = Math.cos(t * 0.9) * 6.2;
+
+      const hour = makeCandlePath(hourDeg, 82, 8, hourWobble);
+      const minute = makeCandlePath(minuteDeg, 138, 10, minuteWobble);
+
+      document.getElementById('hour-candle').setAttribute('d', hour.d);
+      document.getElementById('minute-candle').setAttribute('d', minute.d);
+
+      const hourBase1X = hour.tip.x - Math.cos(hour.tip.rad) * 18 + hour.px * 2.2;
+      const hourBase1Y = hour.tip.y - Math.sin(hour.tip.rad) * 18;
+      const hourBase2X = hour.tip.x - Math.cos(hour.tip.rad) * 32 - hour.px * 2.6;
+      const hourBase2Y = hour.tip.y - Math.sin(hour.tip.rad) * 32;
+
+      const minuteBase1X = minute.tip.x - Math.cos(minute.tip.rad) * 24 + minute.px * 1.8;
+      const minuteBase1Y = minute.tip.y - Math.sin(minute.tip.rad) * 24;
+      const minuteBase2X = minute.tip.x - Math.cos(minute.tip.rad) * 42 - minute.px * 2.1;
+      const minuteBase2Y = minute.tip.y - Math.sin(minute.tip.rad) * 42;
+
+      document.getElementById('hour-drip-1').setAttribute(
+        'd',
+        makeDripPath(hourBase1X, hourBase1Y, 10 + Math.sin(t * 1.1) * 2.5, Math.sin(t * 0.9) * 2)
+      );
+      document.getElementById('hour-drip-2').setAttribute(
+        'd',
+        makeDripPath(hourBase2X, hourBase2Y, 7 + Math.cos(t * 0.8) * 2, Math.cos(t * 1.2) * 1.8)
+      );
+
+      document.getElementById('minute-drip-1').setAttribute(
+        'd',
+        makeDripPath(minuteBase1X, minuteBase1Y, 12 + Math.sin(t * 1.4) * 3, Math.sin(t * 1.1) * 2.4)
+      );
+      document.getElementById('minute-drip-2').setAttribute(
+        'd',
+        makeDripPath(minuteBase2X, minuteBase2Y, 8 + Math.cos(t * 1.2) * 2.4, Math.cos(t * 1.35) * 1.9)
+      );
+
+      const hourFlameX = hour.tip.x;
+      const hourFlameY = hour.tip.y - 2;
+      const minuteFlameX = minute.tip.x;
+      const minuteFlameY = minute.tip.y - 2;
+
+      const hourFlickerX = Math.sin(t * 4.2) * 1.4;
+      const hourFlickerY = Math.cos(t * 3.6) * 1.2;
+      const minuteFlickerX = Math.cos(t * 5.0) * 1.2;
+      const minuteFlickerY = Math.sin(t * 4.3) * 1.0;
+
+      document.getElementById('hour-flame').setAttribute(
+        'd',
+        makeFlamePath(hourFlameX, hourFlameY, 9, hourFlickerX, hourFlickerY)
+      );
+      document.getElementById('minute-flame').setAttribute(
+        'd',
+        makeFlamePath(minuteFlameX, minuteFlameY, 7.2, minuteFlickerX, minuteFlickerY)
+      );
+
+      const hourHalo = document.getElementById('hour-flame-halo');
+      hourHalo.setAttribute('cx', (hourFlameX + hourFlickerX * 0.35).toFixed(2));
+      hourHalo.setAttribute('cy', (hourFlameY - 2 + hourFlickerY * 0.2).toFixed(2));
+      hourHalo.setAttribute('rx', (8 + Math.sin(t * 3.8) * 0.9).toFixed(2));
+      hourHalo.setAttribute('ry', (14 + Math.cos(t * 3.2) * 1.2).toFixed(2));
+
+      const minuteHalo = document.getElementById('minute-flame-halo');
+      minuteHalo.setAttribute('cx', (minuteFlameX + minuteFlickerX * 0.35).toFixed(2));
+      minuteHalo.setAttribute('cy', (minuteFlameY - 2 + minuteFlickerY * 0.2).toFixed(2));
+      minuteHalo.setAttribute('rx', (6.5 + Math.sin(t * 4.5) * 0.7).toFixed(2));
+      minuteHalo.setAttribute('ry', (11 + Math.cos(t * 3.9) * 0.9).toFixed(2));
+    }
+
+    updateClock();
+    let clockInterval = setInterval(updateClock, 90);
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        clearInterval(clockInterval);
+      } else {
+        updateClock();
+        clockInterval = setInterval(updateClock, 90);
+      }
+    });
+
+    /* ─── Dust motes ─────────────────────────────────── */
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 1.5 + 0.4;
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*80}%;
+        width:${sz}px;height:${sz}px;
+        animation-duration:${3+Math.random()*5}s;
+        animation-delay:${Math.random()*6}s;`;
+      starsEl.appendChild(s);
+    }
+
+    /* ─── Floating motifs ────────────────────────────── */
+    const motifContainer = document.getElementById('floating-motifs');
+
+    const motifSVGs = {
+      eye: `<svg viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12 C7 4, 29 4, 34 12 C29 20, 7 20, 2 12 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="18" cy="12" r="4.5" stroke="currentColor" stroke-width="0.9" fill="none"/><circle cx="18" cy="12" r="1.8" fill="currentColor" opacity="0.7"/></svg>`,
+      hourglass: `<svg viewBox="0 0 22 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 2 L19 2 L19 4 C19 10 12 16 12 16 C12 16 19 22 19 28 L19 30 L3 30 L3 28 C3 22 10 16 10 16 C10 16 3 10 3 4 Z" stroke="currentColor" stroke-width="1" fill="none"/><line x1="3" y1="2" x2="19" y2="2" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="30" x2="19" y2="30" stroke="currentColor" stroke-width="1.2"/></svg>`,
+      blooddrop: `<svg viewBox="0 0 20 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 C10 2, 18 13, 18 19 C18 24.5 14.4 28 10 28 C5.6 28 2 24.5 2 19 C2 13 10 2 10 2 Z" stroke="currentColor" stroke-width="0.9" fill="none"/></svg>`,
+      ring: `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="14" cy="14" r="5.5" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.5"/></svg>`,
+    };
+
+    const motifTypes = ['eye','hourglass','blooddrop','ring','eye','hourglass'];
+    motifTypes.forEach((type) => {
+      const el = document.createElement('div');
+      el.className = 'float-motif';
+      el.innerHTML = motifSVGs[type] || motifSVGs.eye;
+      const sz = 0.7 + Math.random() * 0.6;
+      el.style.cssText = `
+        left: ${10 + Math.random()*80}%;
+        bottom: ${Math.random()*60}%;
+        width: ${sz * 22}px;
+        height: ${sz * 22}px;
+        color: rgba(216,207,196,0.55);
+        animation-duration: ${18 + Math.random()*14}s;
+        animation-delay: ${Math.random()*12}s;
+        opacity: 0;
+      `;
+      motifContainer.appendChild(el);
+    });
+
+    /* ─── Featured works (use first 3 with real images) ── */
+    const featuredGrid = document.getElementById('featured-grid');
+      ['feelings', 'goddess-of-death', 'tick-tock']
+      .map(id => PAINTINGS.find(p => p.id === id))
+      .filter(Boolean)
+      .forEach(p => {
+        const card = document.createElement('a');
+        card.className = 'featured-card';
+        card.href = `painting.html?id=${p.id}`;
+        card.innerHTML = `
+          <div class="featured-img">
+            <img src="${p.image}" alt="${p.title}" loading="eager">
+          </div>
+          <div class="featured-label">
+            <span class="featured-label-title">${p.title}</span>
+            <span class="featured-label-year">${p.year} · ${p.medium}</span>
+          </div>`;
+        featuredGrid.appendChild(card);
+      });
+
+    /* ─── Scroll animations ──────────────────────────── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const t = entry.target;
+        if (t.id === 'gallery-link-wrap') {
+          t.style.opacity = '1';
+          t.style.transform = 'translateY(0)';
+        } else {
+          t.classList.add('in-view');
+        }
+        io.unobserve(t);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+    [
+      document.getElementById('section-head-1'),
+      document.getElementById('statement-strip'),
+      document.getElementById('gallery-link-wrap'),
+      ...document.querySelectorAll('.featured-card'),
+    ].forEach(el => { if (el) io.observe(el); });
+
+    /* ─── Clock parallax ─────────────────────────────── */
+    window.addEventListener('scroll', () => {
+      const clock = document.querySelector('.bg-clock');
+      if (clock) {
+        clock.style.transform =
+          `translate(-50%, calc(-50% + ${window.scrollY * 0.18}px))`;
+      }
+    }, { passive: true });
+  </script>
+  <script>
+    (function(){
+      var btn = document.getElementById("nav-hamburger");
+      var links = document.querySelector(".nav-links");
+      var nav  = document.querySelector(".gothic-nav");
+      if (!btn || !links) return;
+
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var open = links.classList.toggle("open");
+        btn.classList.toggle("open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      links.addEventListener("click", function(e){
+        if (e.target.tagName === "A") {
+          links.classList.remove("open");
+          btn.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      document.addEventListener("click", function(e){
+        if (nav && !nav.contains(e.target) && links.classList.contains("open")) {
+          links.classList.remove("open");
+          btn.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

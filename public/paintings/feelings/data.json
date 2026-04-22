@@ -1,0 +1,16 @@
+{
+  "id": "feelings",
+  "title": "Feelings",
+  "subtitle": "Self-portrait",
+  "year": "2021–2022",
+  "medium": "Acrylic & Coloured Pencil",
+  "dimensions": "A3",
+  "series": "Self-portraits",
+  "tags": ["self-portrait", "crown", "raven", "snake", "blood"],
+  "palette": { "accent": "#0a0810", "glow": "rgba(40,30,60,0.15)", "ice": "rgba(20,15,40,0.1)" },
+  "motifs": ["🐦", "👁", "🩸"],
+  "images": { "main": "main.jpg", "details": [] },
+  "intro": "Despite everything in it, there is a stillness here.",
+  "story": "A raven perches on the left shoulder. A snake wraps around the right arm. The figure wears a gold laurel crown and a black hooded cloak with gold embroidery. The third eye runs blood down the centre of the forehead. The right eye has a single tear. This is one of the most formally composed works in the collection.",
+  "quote": "I remember begging God to let us be friends."
+}

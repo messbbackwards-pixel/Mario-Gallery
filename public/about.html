@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Mario — Egyptian painter exploring identity, time, and the inner life through oil and mixed media.">
+  <title>Mario — About</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .about-hero {
+      min-height: 60vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      padding: 9rem 2rem 5rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .about-hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 100%, rgba(120,21,32,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 80%, rgba(26,45,74,0.12) 0%, transparent 60%),
+        linear-gradient(to bottom, var(--void), var(--abyss));
+    }
+
+    .portrait-frame { width:140px; height:140px; margin:0 auto 2.5rem; position:relative; }
+    .portrait-circle {
+      width:100%; height:100%; border-radius:50%;
+      border:1px solid var(--rust);
+      overflow:hidden;
+      box-shadow:0 0 40px rgba(74,122,170,0.1), 0 0 80px rgba(120,21,32,0.06);
+    }
+    .portrait-circle .no-img {
+      width:100%; height:100%;
+      background:linear-gradient(135deg, #0c0c18, #1a1020);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.5rem; color:var(--cold-grey);
+    }
+    .portrait-ring {
+      position:absolute; inset:-12px; border-radius:50%;
+      border:1px solid var(--ash); opacity:0.35;
+      animation:portrait-spin 50s linear infinite;
+    }
+    @keyframes portrait-spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* About body */
+    .about-body { max-width:700px; margin:0 auto; padding:5rem 2rem 4rem; }
+
+    /* Bio paragraphs — elegant, breath between them */
+    .bio-section {
+      margin-bottom:4rem;
+      opacity:0; transform:translateY(22px);
+      transition:opacity 0.9s ease, transform 0.9s ease;
+    }
+    .bio-section.in-view { opacity:1; transform:translateY(0); }
+
+    .bio-section p {
+      font-family:var(--font-body);
+      font-size:1.08rem;
+      line-height:1.9;
+      color:var(--pallor);
+    }
+    .bio-section p + p { margin-top:1.3em; }
+    .bio-section em { color:var(--bone); font-family:var(--font-italic); font-style:italic; }
+
+    /* Section label */
+    .bio-label {
+      font-family:var(--font-title); font-size:0.58rem;
+      letter-spacing:0.4em; text-transform:uppercase;
+      color:var(--bone-dim); display:block; margin-bottom:1.8rem;
+    }
+
+    /* Blood rule */
+    .bio-rule {
+      width:32px; height:1px;
+      background:linear-gradient(to right, transparent, var(--blood), transparent);
+      margin:0 0 2.5rem;
+    }
+
+    /* Motifs grid */
+    .motifs-grid {
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+      gap:1px; border:1px solid var(--ash); margin:3rem 0;
+    }
+    .motif-item {
+      background:var(--stone); padding:1.4rem 1rem; text-align:center;
+      transition:background 0.3s;
+      opacity:0; transform:translateY(12px);
+      transition:background 0.3s, opacity 0.6s ease, transform 0.6s ease;
+    }
+    .motif-item.in-view { opacity:1; transform:translateY(0); }
+    .motif-item:hover { background:var(--stone-mid); }
+    .motif-icon { display:flex; align-items:center; justify-content:center; height:2rem; margin-bottom:0.5rem; filter:grayscale(0.3); }
+    .motif-name {
+      font-family:var(--font-title); font-size:0.68rem;
+      letter-spacing:0.18em; text-transform:uppercase;
+      color:var(--pallor); display:block; margin-bottom:0.3rem;
+    }
+    .motif-desc { font-family:var(--font-italic); font-style:italic; font-size:0.78rem; color:var(--bone-dim); }
+
+    /* Materials */
+    .materials { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1.5rem 0 3rem; }
+    .material-tag {
+      font-family:var(--font-title); font-size:0.6rem;
+      letter-spacing:0.18em; text-transform:uppercase;
+      color:var(--ice); border:1px solid var(--specter);
+      padding:0.28rem 0.8rem;
+    }
+
+    /* The nickname note */
+    .nickname-note {
+      border-left:2px solid var(--blood);
+      padding:1.2rem 1.5rem;
+      margin:3rem 0;
+      background:var(--stone);
+      font-family:var(--font-italic); font-style:italic;
+      font-size:1rem; color:var(--pallor); line-height:1.7;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="gothic-nav">
+    <a href="index.html" class="nav-logo">mariothesmart</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="exhibition.html">Exhibition</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+    </ul>
+  </nav>
+
+  <header class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="particles-container"></div>
+    <div style="position:relative;z-index:2;">
+      <div class="portrait-frame animate-up">
+        <div class="portrait-circle"><div class="no-img"><svg viewBox="0 0 32 22" width="32" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.7"><path d="M1 11 C6 3, 26 3, 31 11 C26 19, 6 19, 1 11 Z" stroke="#b8a898" stroke-width="1" fill="none"/><circle cx="16" cy="11" r="4.5" stroke="#b8a898" stroke-width="1" fill="none"/><circle cx="16" cy="11" r="1.8" fill="#a01828" opacity="0.8"/></svg></div></div>
+        <div class="portrait-ring"></div>
+      </div>
+      <h1 class="section-title animate-up delay-2">Mario</h1>
+      <p class="section-subtitle animate-up delay-3"><em>also known as Mariothesmart</em></p>
+    </div>
+  </header>
+
+  <div class="about-body">
+
+    <div class="bio-section" id="bio-1">
+      <span class="bio-label">Who she is</span>
+      <div class="bio-rule"></div>
+      <p>Mario is a 19-year-old Egyptian young woman who's interested in making art. She doesn't quite call herself an artist. She believes everyone is more than one thing, and wouldn't want to be reduced to any single term — including that one.</p>
+      <p>She has always been interested in making art. She believes she can put the meanings she can't say out loud into things that can be felt. She believes people can find their spirits in a good piece of art.</p>
+    </div>
+
+    <div class="bio-section" id="bio-2">
+      <span class="bio-label">What her work is about</span>
+      <div class="bio-rule"></div>
+      <p>Her work lives somewhere between nostalgia, confusion, softness, symbolism, and the little emotional details that somehow refuse to leave people alone. She's drawn to the things that don't always make sense right away — feelings that change shape over time, details that become more meaningful later, and the strange way a mistake can accidentally tell the truth better than the original plan ever could. <em>(Which is honestly a little rude, but very beautiful.)</em></p>
+    </div>
+
+    <div class="bio-section" id="bio-3">
+      <span class="bio-label">On meaning</span>
+      <div class="bio-rule"></div>
+      <p>She doesn't like forcing meanings onto people. She can tell you the story that opened her heart to a piece, but not what it must mean. A lot of the time, she discovers new meanings in her own work as she grows — sometimes in things she doesn't even remember making on purpose. To her, if she were able to fully say the meaning, she probably wouldn't have painted it.</p>
+    </div>
+
+    <div class="bio-section" id="bio-4">
+      <span class="bio-label">The space her art creates</span>
+      <div class="bio-rule"></div>
+      <p>She loves making visual art, especially painting, and often treats it as a place where memory, loneliness, humor, tenderness, and contradiction can all exist in the same room without needing to behave. Her work is deeply personal, emotionally layered, and often rooted in the quiet parts of growing up — the parts that don't always get named out loud, but still leave a mark. Even mistakes become part of the language.</p>
+      <p>She also loves writing and playing guitar.</p>
+    </div>
+
+    <div class="nickname-note bio-section" id="bio-5">
+      "Mariothesmart" is a nickname a dear friend gave to her. Ever since then, she kept it up.
+    </div>
+
+    <!-- Recurring motifs -->
+    <h2 class="section-title" style="font-size:1.3rem;text-align:left;margin:3.5rem 0 1.5rem;"
+        id="motifs-title">Things that keep showing up</h2>
+    <div class="motifs-grid" id="motifs-grid">
+      <div class="motif-item" style="transition-delay:0s"><span class="motif-icon"><svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="15" stroke="#7a7068" stroke-width="1.2" fill="none"/><line x1="18" y1="6" x2="18" y2="30" stroke="#7a7068" stroke-width="0.8" opacity="0.4"/><line x1="6" y1="18" x2="30" y2="18" stroke="#7a7068" stroke-width="0.8" opacity="0.4"/><circle cx="18" cy="18" r="2" fill="#a01828" opacity="0.7"/><line x1="18" y1="18" x2="18" y2="9" stroke="#b8a898" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="18" x2="24" y2="18" stroke="#b8a898" stroke-width="1.2" stroke-linecap="round"/></svg></span><span class="motif-name">The Clock</span><span class="motif-desc">always present, rarely right</span></div>
+      <div class="motif-item" style="transition-delay:0.07s"><span class="motif-icon"><svg viewBox="0 0 36 24" width="32" height="22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12 C7 4, 29 4, 34 12 C29 20, 7 20, 2 12 Z" stroke="#7a7068" stroke-width="1.2" fill="none"/><circle cx="18" cy="12" r="5" stroke="#7a7068" stroke-width="1" fill="none"/><circle cx="18" cy="12" r="2" fill="#a01828" opacity="0.8"/><line x1="18" y1="17" x2="18" y2="22" stroke="#a01828" stroke-width="0.8" opacity="0.6"/></svg></span><span class="motif-name">Third Eye</span><span class="motif-desc">usually bleeding, rarely open</span></div>
+      <div class="motif-item" style="transition-delay:0.14s"><span class="motif-icon"><svg viewBox="0 0 36 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L32 4 Q34 4 34 8 L34 22 Q34 26 30 26 L20 26 L16 31 L12 26 L6 26 Q4 26 4 22 L4 8 Q4 4 8 4 Z" stroke="#7a7068" stroke-width="1.1" fill="none"/><line x1="10" y1="12" x2="26" y2="12" stroke="#7a7068" stroke-width="0.9" opacity="0.5"/><line x1="10" y1="17" x2="22" y2="17" stroke="#7a7068" stroke-width="0.9" opacity="0.5"/></svg></span><span class="motif-name">Speech Bubbles</span><span class="motif-desc">the things that needed saying</span></div>
+      <div class="motif-item" style="transition-delay:0.21s"><span class="motif-icon"><svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="13" stroke="#4a7aaa" stroke-width="1.2" fill="none" opacity="0.7"/><circle cx="18" cy="18" r="7" fill="none" stroke="#4a7aaa" stroke-width="0.8" opacity="0.4"/><circle cx="18" cy="18" r="2.5" fill="#4a7aaa" opacity="0.6"/></svg></span><span class="motif-name">The Blue</span><span class="motif-desc">electric, not peaceful</span></div>
+      <div class="motif-item" style="transition-delay:0.28s"><span class="motif-icon"><svg viewBox="0 0 24 34" width="22" height="30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 C12 2, 22 14, 22 21 C22 27.6 17.5 32 12 32 C6.5 32 2 27.6 2 21 C2 14 12 2 12 2 Z" stroke="#a01828" stroke-width="1.1" fill="none" opacity="0.8"/><path d="M12 12 C12 12, 18 19, 18 23 C18 26.3 15.3 29 12 29" stroke="#a01828" stroke-width="0.7" fill="none" opacity="0.4"/></svg></span><span class="motif-name">Blood</span><span class="motif-desc">more emotional than violent</span></div>
+      <div class="motif-item" style="transition-delay:0.35s"><span class="motif-icon"><svg viewBox="0 0 40 26" width="34" height="22" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="6" width="16" height="14" rx="7" stroke="#7a7068" stroke-width="1.2" fill="none"/><rect x="22" y="6" width="16" height="14" rx="7" stroke="#7a7068" stroke-width="1.2" fill="none"/><line x1="18" y1="13" x2="22" y2="13" stroke="#7a7068" stroke-width="1.2"/><line x1="2" y1="6" x2="0" y2="3" stroke="#7a7068" stroke-width="1"/><line x1="38" y1="6" x2="40" y2="3" stroke="#7a7068" stroke-width="1"/></svg></span><span class="motif-name">Glasses</span><span class="motif-desc">seeing, not seen</span></div>
+    </div>
+
+    <!-- Materials -->
+    <div class="bio-section" id="bio-materials">
+      <span class="bio-label">Materials</span>
+      <div class="bio-rule"></div>
+      <div class="materials">
+        <span class="material-tag">Acrylic</span>
+        <span class="material-tag">Coloured Pencil</span>
+        <span class="material-tag">Charcoal</span>
+        <span class="material-tag">Pencil</span>
+        <span class="material-tag">Mixed Media</span>
+        <span class="material-tag">Paper</span>
+        <span class="material-tag">Mistakes (repurposed)</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="gothic-footer">
+    <span class="footer-logo">mariothesmart</span>
+    <div class="gothic-divider" style="margin:1.5rem auto;"><div class="ornament">—</div></div>
+    <p><em>All works copyright © Mario. Do not reproduce without permission.</em></p>
+  </footer>
+
+  <script src="js/gallery.js"></script>
+  <script>
+    // Scroll reveals
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.bio-section, .motif-item').forEach(el => io.observe(el));
+  </script>
+  <script>
+    (function(){
+      var btn = document.getElementById("nav-hamburger");
+      var links = document.querySelector(".nav-links");
+      var nav  = document.querySelector(".gothic-nav");
+      if (!btn || !links) return;
+      btn.addEventListener("click", function(){
+        var open = links.classList.toggle("open");
+        btn.classList.toggle("open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      // Close drawer when a link is tapped
+      links.addEventListener("click", function(e){
+        if (e.target.tagName === "A") {
+          links.classList.remove("open");
+          btn.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+      // Close drawer when tapping outside the nav
+      document.addEventListener("click", function(e){
+        if (nav && !nav.contains(e.target) && links.classList.contains("open")) {
+          links.classList.remove("open");
+          btn.classList.remove("open");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "id": "the-devils-death",
+  "title": "The Devil's Death",
+  "subtitle": "Self-portrait",
+  "year": "2021–2022",
+  "medium": "Acrylic & Coloured Pencil",
+  "dimensions": "A3",
+  "series": "Self-portraits",
+  "tags": ["self-portrait", "snakes", "skulls", "glasses", "roses"],
+  "palette": { "accent": "#0c0c16", "glow": "rgba(40,40,80,0.14)", "ice": "rgba(20,20,50,0.1)" },
+  "motifs": ["🐍", "👓", "🩸"],
+  "images": { "main": "main.jpg", "details": [] },
+  "intro": "Everything crowds into this one. Everything present at once, refusing to quiet down.",
+  "story": "Skulls in the upper left. A snake on the right. A strange creature that's also a face. Roses. Hands. Waves at the bottom. Blood running from the eyes and the forehead wound. The silver tinfoil crown catches the light differently every time. This painting is dense in the way a very full day feels when you're trying to sleep.",
+  "quote": "As I grow up I see different meanings and new details in my art that I don't remember even making on purpose."
+}
