@@ -101,7 +101,9 @@
         <div class="hero-frame" id="hero-frame">
           <div class="c tl"></div><div class="c tr"></div>
           <div class="c bl"></div><div class="c br"></div>
-          <div class="hero-img-container" id="hero-img-container">
+          <div class="hero-img-container" id="hero-img-container"
+               onclick="openZoom(document.getElementById('hero-img').src)"
+               style="cursor:zoom-in;">
             <div class="hero-skeleton" id="hero-skeleton"></div>
             <img
               class="hero-img"
@@ -111,7 +113,7 @@
               fetchpriority="high"
               decoding="async"
               loading="eager"
-              onclick="openZoom(this.src)"
+              draggable="false"
             >
           </div>
           <span class="zoom-hint">click to enlarge</span>
@@ -317,11 +319,13 @@
           data.images.details.forEach(function(detail, i) {
             var sec = document.createElement('div');
             sec.className = 'detail-section' + (i % 2 === 1 ? ' flip' : '') + ' scroll-reveal';
+            var detailSrc = 'paintings/' + paintingId + '/' + detail.file;
             sec.innerHTML =
-              '<div class="detail-img-wrap">' +
-                '<img src="paintings/' + paintingId + '/' + detail.file + '"' +
+              '<div class="detail-img-wrap" onclick="openZoom(\'' + detailSrc + '\')" style="cursor:zoom-in;">' +
+                '<img src="' + detailSrc + '"' +
                      ' alt="' + (detail.caption || 'Detail') + '"' +
-                     ' loading="lazy" decoding="async" onclick="openZoom(this.src)">' +
+                     ' draggable="false"' +
+                     ' loading="lazy" decoding="async">' +
               '</div>' +
               '<div class="detail-text">' +
                 '<span class="detail-eyebrow">Detail · ' + String(i + 1).padStart(2, '0') + '</span>' +
@@ -353,6 +357,9 @@
             container.appendChild(sec);
           }
         }
+
+        // Apply image protection to any newly rendered detail images
+        if (window._protectArtworkImages) window._protectArtworkImages();
 
         if (data.story) {
           var storyEl = document.getElementById('story-text');
@@ -582,14 +589,14 @@
     }
 
     function openZoom(src) {
-    	if (!src || src.indexOf('/') === -1) return;
-   	 document.getElementById('zoom-img').src = src;
-   	 document.getElementById('zoom-overlay').classList.add('active');
-   	 document.body.style.overflow = 'hidden';
-    	document.body.style.touchAction = 'none';
-    	var closeBtn = document.querySelector('.zoom-close');
-    	if (closeBtn) closeBtn.focus();
-      }
+      if (!src || src.indexOf('/') === -1) return;
+      document.getElementById('zoom-img').src = src;
+      document.getElementById('zoom-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+      var closeBtn = document.querySelector('.zoom-close');
+      if (closeBtn) closeBtn.focus({ preventScroll: true });
+    }
 
     function closeZoom() {
     	document.getElementById('zoom-overlay').classList.remove('active');

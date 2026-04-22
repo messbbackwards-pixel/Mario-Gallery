@@ -417,6 +417,7 @@
     function exhibitImg(p, h) {
       if (p.image) {
         return `<img src="${p.image}" alt="${p.title}"
+                  draggable="false"
                   style="width:100%;height:${h}px;object-fit:cover;display:block;
                          filter:saturate(0.78) contrast(1.06) brightness(0.88);
                          transition:filter 0.5s,transform 0.5s;" loading="lazy">`;

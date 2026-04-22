@@ -6,6 +6,76 @@
  * Does NOT handle gallery filtering — that lives in gallery.html.
  */
 
+// ─── Artwork Image Protection ──────────────────────────────
+// Blocks casual right-click save and drag-off on all artwork images.
+//
+// Approach:
+//   - CSS sets pointer-events:none on every artwork <img>, so
+//     right-click events land on the container element, not the img.
+//   - We intercept contextmenu on those containers to prevent the
+//     browser "Save Image As" menu from appearing.
+//   - dragstart is blocked at the document level as a fallback.
+//   - draggable="false" is set on every artwork img element.
+//
+// Containers covered:
+//   .hero-img-container  — painting page main artwork
+//   .masonry-canvas      — gallery cards
+//   .detail-img-wrap     — painting page detail images
+//   .exhibit-canvas      — exhibition page
+//   .featured-img        — homepage featured cards
+//   #zoom-overlay        — full-view zoom modal
+(function () {
+  var ARTWORK_SEL = [
+    '.hero-img',
+    '.masonry-img',
+    '.detail-img-wrap img',
+    '.exhibit-canvas img',
+    '.featured-img img',
+    '#zoom-img',
+  ].join(',');
+
+  var CONTAINER_SEL = [
+    '.hero-img-container',
+    '.masonry-canvas',
+    '.detail-img-wrap',
+    '.exhibit-canvas',
+    '.featured-img',
+    '#zoom-overlay',
+  ].join(',');
+
+  function protectImages() {
+    document.querySelectorAll(ARTWORK_SEL).forEach(function (img) {
+      if (img.dataset.protected) return;
+      img.setAttribute('draggable', 'false');
+      img.dataset.protected = '1';
+    });
+  }
+
+  // With pointer-events:none on the <img>, right-click events land
+  // on the container. Block them there.
+  document.addEventListener('contextmenu', function (e) {
+    var t = e.target;
+    if (t.matches(CONTAINER_SEL) || t.closest(CONTAINER_SEL)) {
+      e.preventDefault();
+    }
+  });
+
+  // Belt-and-suspenders: also block dragstart in case pointer-events
+  // behaves differently across browsers.
+  document.addEventListener('dragstart', function (e) {
+    if (e.target.matches(ARTWORK_SEL)) {
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    protectImages();
+    setTimeout(protectImages, 800);
+    setTimeout(protectImages, 2000);
+  });
+
+  window._protectArtworkImages = protectImages;
+}());
 // ─── Particles ────────────────────────────────────────────
 function createParticles(container, count = 25) {
   for (let i = 0; i < count; i++) {

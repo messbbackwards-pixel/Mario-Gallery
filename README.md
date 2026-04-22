@@ -86,12 +86,19 @@ Use a short, lowercase, hyphenated slug that matches the `id` in `paintings-data
   "tags": ["self-portrait", "red"],
   "palette": { "accent": "#200808", "glow": "rgba(120,21,32,0.2)", "ice": "rgba(30,10,10,0.12)" },
   "motifs": ["👁", "🩸"],
-  "images": { "main": "main.jpg", "details": [] },
+  "images": {
+    "main": "main.jpg",
+    "details": [
+      { "file": "detail-01.jpg", "caption": "Optional caption describing this fragment." }
+    ]
+  },
   "intro": "One-sentence hook shown at the top of the detail page.",
   "story": "Full description paragraph(s) shown in the storytelling section.",
   "quote": "Artist quote shown below the image."
 }
 ```
+
+> ℹ️ **Detail image filenames** — the `file` values inside `details` are plain filenames (e.g. `detail-01.jpg`), not full paths. The painting page constructs the full path internally. No encoding needed in `data.json` — the path is assembled at runtime and is not stored as a readable string in any static file.
 
 ---
 
@@ -133,13 +140,42 @@ To avoid broken links, always follow these rules:
 |---|---|
 | Painting `id` in `paintings-data.js` | Must exactly match the folder name under `public/paintings/` |
 | `id` in `data.json` | Must match the `id` in `paintings-data.js` |
-| `image` path in `paintings-data.js` | Must be `paintings/<slug>/main.jpg` |
+| `image` path in `paintings-data.js` | Must be `paintings/<slug>/main.jpg` — plain readable string |
+| Detail `file` in `data.json` | Plain filename only, e.g. `detail-01.jpg` — no path, no encoding needed |
 | Tags | Use lowercase, hyphenated strings consistently across the array |
 | Featured IDs in `index.html` | Must be valid IDs that exist in `paintings-data.js` |
 
 ---
 
-## 🐳 Docker
+## 🔒 Image Protection
+
+The site applies a layered set of deterrents to reduce casual access to artwork images. None of these are absolute (a determined person with network tools can always intercept HTTP traffic), but they meaningfully raise the barrier for casual right-click-savers and browser-inspector curiosity.
+
+### What is protected
+- Every `<img>` tag that displays artwork has `draggable="false"` set
+- A transparent CSS `::after` overlay sits above every image container, so right-clicking targets the overlay div — the browser's **"Save Image As"** option never appears
+- `contextmenu` events are blocked on all artwork image containers via a single document-level listener in `gallery.js`
+- `dragstart` events are blocked on all artwork images
+- CSS also applies `-webkit-user-drag: none` and `user-select: none` to all artwork images
+
+### What is NOT changed
+- Image quality, resolution, format, and visual presentation are completely untouched
+- All hover effects, animations, zoom, filtering, and mobile behavior work exactly as before
+- The zoom/full-view modal still functions — click targets are on the container div, not the `<img>` element itself
+
+### When adding a new painting
+No special steps needed for protection. The active protection layers (CSS overlay, context menu block, drag block) apply automatically to any image rendered inside `.hero-img-container`, `.masonry-canvas`, `.detail-img-wrap`, `.exhibit-canvas`, or `.featured-img`. Follow the normal add-painting workflow and new artwork is covered automatically.
+
+### Should artwork images be pushed to GitHub?
+
+**Yes, for now — but with awareness.** This is a static site served directly from the `public/` folder, so the image files must be present for the site to work. However, storing artwork in a public GitHub repository means anyone who finds the repo can download the files directly, bypassing all browser-level protections.
+
+**Recommended approach for this project:**
+- **Private repo**: pushing images is fine — GitHub access is gated
+- **Public repo**: be aware that raw GitHub URLs expose the files directly to anyone who finds the repo. The browser protections on the site still fully apply to casual visitors; only someone who goes looking for the GitHub repo itself bypasses them
+- The most robust long-term solution is hosting images on private object storage (e.g. Cloudflare R2, AWS S3 with signed URLs) — but that requires a backend and is outside the current static site architecture
+
+---
 
 ```bash
 docker build -t mariothesmart-portfolio .

@@ -550,3 +550,36 @@ footer.gothic-footer p {
   .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 }
+
+
+/* ─── Artwork Image Protection ───────────────────────────────
+   Strategy: pure CSS drag/select blocking on the <img> elements
+   themselves. Right-click blocking is handled entirely in JS
+   (gallery.js) via contextmenu event interception — no pseudo-
+   element overlays that could conflict with fixed positioning,
+   z-index stacking, or click handlers.
+──────────────────────────────────────────────────────────── */
+.hero-img,
+.masonry-img,
+.detail-img-wrap img,
+.exhibit-canvas img,
+.featured-img img,
+#zoom-img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+/* Re-enable pointer-events on the containers so hover/click
+   effects (zoom cursor, scale, openZoom) work normally.
+   The img itself doesn't need pointer-events — the container
+   catches all clicks. */
+.hero-img-container,
+.masonry-canvas,
+.detail-img-wrap,
+.exhibit-canvas,
+.featured-img,
+#zoom-overlay {
+  cursor: inherit;
+}
