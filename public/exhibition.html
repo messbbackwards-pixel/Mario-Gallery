@@ -7,319 +7,7 @@
   <meta name="description" content="Exhibition — a curated walk through Mario's paintings, arranged as rooms in an imagined gallery.">
   <title>Mario — Exhibition</title>
   <link rel="stylesheet" href="styles/main.css">
-  <style>
-    /* ─── Exhibition Entry ────────────────────────── */
-    .exhibition-entry {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .exhibition-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 100% 60% at 50% 100%, rgba(26,45,74,0.35) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 50% 60%, rgba(120,21,32,0.1) 0%, transparent 50%),
-        linear-gradient(to bottom, #060408, #0d0a14);
-    }
-
-    /* ─── 3D Hall ─────────────────────────────────── */
-    .hall-scene {
-      perspective: 800px;
-      perspective-origin: 50% 50%;
-      padding: 6rem 2rem;
-      overflow: hidden;
-      position: relative;
-      background: linear-gradient(to bottom, var(--deep), var(--black));
-    }
-
-    .hall-walls {
-      position: relative;
-      max-width: 1000px;
-      margin: 0 auto;
-      transform-style: preserve-3d;
-    }
-
-    /* Faux floor perspective */
-    .hall-floor {
-      position: absolute;
-      bottom: -20px;
-      left: -10%;
-      right: -10%;
-      height: 100px;
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(216,207,196,0.02) 50%,
-        rgba(216,207,196,0.04) 100%
-      );
-      transform: rotateX(80deg);
-      transform-origin: bottom;
-    }
-
-    /* ─── Exhibition Wall Rows ────────────────────── */
-    .exhibition-row {
-      display: grid;
-      gap: 4rem;
-      margin-bottom: 6rem;
-      align-items: center;
-    }
-
-    .exhibition-row.row-2 {
-      grid-template-columns: 1.2fr 1fr;
-    }
-
-    .exhibition-row.row-2.reverse {
-      grid-template-columns: 1fr 1.2fr;
-    }
-
-    .exhibition-row.row-3 {
-      grid-template-columns: 1fr 1.4fr 1fr;
-    }
-
-    @media (max-width: 900px) {
-      .exhibition-row.row-3 {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .exhibition-row.row-2,
-      .exhibition-row.row-2.reverse,
-      .exhibition-row.row-3 {
-        grid-template-columns: 1fr;
-      }
-      .exhibition-row .exhibit-piece { order: 1; }
-      .exhibition-row .exhibit-text-panel { order: 2; }
-    }
-
-    /* ─── Exhibition Painting ─────────────────────── */
-    .exhibit-piece {
-      display: block;
-      text-decoration: none;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .exhibit-piece:hover { transform: scale(1.03) translateY(-5px); }
-
-    .exhibit-frame {
-      position: relative;
-      background: linear-gradient(135deg, #2a1f14, #3d2b19, #2a1f14);
-      padding: 18px;
-      border: 2px solid var(--bone-dim);
-      box-shadow:
-        inset 0 0 40px rgba(0,0,0,0.9),
-        0 20px 60px rgba(0,0,0,0.8),
-        0 0 0 1px rgba(216,207,196,0.08);
-      transition: border-color 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .exhibit-piece:hover .exhibit-frame {
-      border-color: var(--pallor);
-      box-shadow:
-        inset 0 0 40px rgba(0,0,0,0.9),
-        0 30px 80px rgba(0,0,0,0.9),
-        var(--glow-bone);
-    }
-
-    /* All 4 corners */
-    .exhibit-frame .c {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-color: var(--bone-dim);
-      border-style: solid;
-      transition: border-color 0.4s;
-    }
-    .exhibit-piece:hover .exhibit-frame .c { border-color: var(--pallor); }
-    .c.tl { top: 5px; left: 5px; border-width: 2px 0 0 2px; }
-    .c.tr { top: 5px; right: 5px; border-width: 2px 2px 0 0; }
-    .c.bl { bottom: 5px; left: 5px; border-width: 0 0 2px 2px; }
-    .c.br { bottom: 5px; right: 5px; border-width: 0 2px 2px 0; }
-
-    .exhibit-canvas {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .exhibit-canvas img {
-      width: 100%;
-      display: block;
-      filter: saturate(0.88) contrast(1.05);
-      transition: filter 0.5s ease;
-    }
-
-    .exhibit-piece:hover .exhibit-canvas img {
-      filter: saturate(1.1) contrast(1.1);
-    }
-
-    /* Wall spotlight effect */
-    .exhibit-spotlight {
-      position: absolute;
-      top: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 3px;
-      height: 80px;
-      background: linear-gradient(to bottom, rgba(216,207,196,0.1), transparent);
-      pointer-events: none;
-    }
-
-    .exhibit-label {
-      margin-top: 0.8rem;
-      text-align: center;
-    }
-
-    .exhibit-label-title {
-      font-family: var(--font-title);
-      font-size: 0.82rem;
-      color: var(--pallor);
-      letter-spacing: 0.1em;
-      display: block;
-    }
-
-    .exhibit-label-sub {
-      font-family: var(--font-italic);
-      font-style: italic;
-      font-size: 0.75rem;
-      color: var(--white-dim);
-    }
-
-    /* ─── Exhibition text panels ──────────────────── */
-    .exhibit-text-panel {
-      padding: 2rem;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      position: relative;
-    }
-
-    .exhibit-text-panel::before {
-      content: '';
-      font-family: var(--font-display);
-      font-size: 2rem;
-      color: var(--bone-dim);
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    .exhibit-panel-title {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      color: var(--pallor);
-      margin-bottom: 1rem;
-      line-height: 1.3;
-    }
-
-    .exhibit-panel-body {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      color: var(--white-dim);
-      line-height: 1.8;
-    }
-
-    .exhibit-panel-body em {
-      color: var(--white);
-      font-family: var(--font-italic);
-      font-style: italic;
-    }
-
-    /* ─── Series dividers ─────────────────────────── */
-    .series-divider {
-      text-align: center;
-      padding: 4rem 2rem 2rem;
-    }
-
-    .series-name {
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      color: var(--ice);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      display: block;
-    }
-
-    .series-count {
-      font-family: var(--font-italic);
-      font-style: italic;
-      font-size: 0.85rem;
-      color: var(--white-dim);
-      margin-top: 0.3rem;
-    }
-
-    /* ─── Entry screen ────────────────────────────── */
-    .enter-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 5000;
-      background: var(--black);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      transition: opacity 1s ease;
-    }
-
-    .enter-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .enter-screen-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.5rem, 5vw, 3.5rem);
-      color: var(--pallor);
-      text-shadow: var(--glow-bone);
-      margin-bottom: 0.5rem;
-    }
-
-    .enter-screen p {
-      font-family: var(--font-italic);
-      font-style: italic;
-      color: var(--white-dim);
-      margin-bottom: 3rem;
-      font-size: 1.1rem;
-    }
-
-    .enter-screen-ornaments {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 3rem;
-    }
-
-    .enter-candle {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .enter-flame {
-      width: 8px;
-      height: 16px;
-      background: radial-gradient(ellipse at bottom, #e8e0d8 0%, #c8a060 30%, #7a1520 70%, transparent 100%);
-      border-radius: 50% 50% 30% 30%;
-      animation: flicker 2s ease-in-out infinite;
-      box-shadow: 0 0 10px rgba(200,160,96,0.7), 0 0 25px rgba(122,21,32,0.35);
-    }
-
-    .enter-candle-body {
-      width: 10px;
-      height: 60px;
-      background: linear-gradient(to bottom, #d8cfc4, #8a7060);
-      border-radius: 1px 1px 3px 3px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/exhibition.css">
 </head>
 <body>
 
@@ -396,8 +84,8 @@
     <p><em>All works copyright © Mario. Do not reproduce without permission.</em></p>
   </footer>
 
-  <script src="js/paintings-data.js"></script>
-  <script src="js/gallery.js"></script>
+  <script src="js/paintings-manifest.js"></script>
+  <script src="js/site.js"></script>
   <script>
     // ─── Enter screen ──────────────────────────────────────
     var _enterHallCalled = false;
@@ -410,13 +98,33 @@
     }
 
     // ─── Build exhibition hall ─────────────────────────────
+    //
+    // Layout is driven by exhibitionLayout + exhibitionOrder flags
+    // in paintings-manifest.js. Paintings are resolved by ID (never by
+    // array index) so reordering PAINTINGS never breaks the exhibition.
+    //
+    // Layout types:
+    //   text-painting  → text panel left, painting right
+    //   painting-text  → painting left, text panel right
+    //   trio           → three paintings in a row (grouped by exhibitionOrder)
+    //   solo           → single centred painting
+    //
+    // The trio group collects all paintings with exhibitionLayout === 'trio',
+    // sorted by id to keep a stable order independent of PAINTINGS order.
 
     const hall = document.getElementById('exhibition-hall');
 
+    // Resolve paintings by ID, never by index
+    function getPaintingById(id) {
+      return PAINTINGS.find(p => p.id === id) || null;
+    }
+
     // Render an exhibit image or gradient fallback
+    // Images get data-artwork-img / data-artwork-container for protection
     function exhibitImg(p, h) {
       if (p.image) {
         return `<img src="${p.image}" alt="${p.title}"
+                  data-artwork-img
                   draggable="false"
                   style="width:100%;height:${h}px;object-fit:cover;display:block;
                          filter:saturate(0.78) contrast(1.06) brightness(0.88);
@@ -427,55 +135,61 @@
                            font-size:3rem;opacity:0.5;">${p.icon}</div>`;
     }
 
+    // Get the panel intro text directly from the manifest.
+    // p.intro is already available — no fetch needed.
+    function fallbackIntro(p) {
+      return p.intro || p.description.replace(/<[^>]+>/g, '').trim().slice(0, 200) + '…';
+    }
+
     // ── Layout configuration ───────────────────────────────
     //
-    // PAINTINGS array indices (0-based):
-    //   0  Who's Watching Whom    (Self-portraits)
-    //   1  The End Is Near        (Self-portraits)
-    //   2  Wake Me Up When It's Over (Studies)
-    //   3  Goddess of Death       (Self-portraits)
-    //   4  Tick, Tock             (Time Studies)
-    //   5  Guilt                  (Narrative Works)
-    //   6  The Devil's Death      (Self-portraits)
-    //   7  Feelings               (Self-portraits)
+    // To change what appears in the exhibition or reorder it, edit the
+    // layouts array below. Paintings are resolved by ID (never by array
+    // index), so reordering PAINTINGS in the manifest never breaks this.
     //
-    // Exhibition layout:
-    //   text-painting → Who's Watching Whom (0)        opens the self-portraits
-    //   painting-text → Feelings (7)                   second self-portrait pair
-    //   trio          → Tick,Tock / Guilt / The Devil's Death (4,5,6) time & narrative works
-    //   solo          → Goddess of Death (3)            closes the show
+    // Note: the manifest has exhibitionLayout / exhibitionOrder fields for
+    // documentation purposes, but the actual exhibition is driven by this
+    // layouts array. When adding a new painting to the exhibition, you must
+    // add an entry here AND update the manifest fields to match.
+    //
+    // Current exhibition:
+    //   1. Who's Watching Whom   — text-painting (opens the show)
+    //   2. Feelings              — painting-text (second self-portrait pair)
+    //   3. Tick,Tock / Guilt / The Devil's Death — trio
+    //   4. Goddess of Death      — solo (closes the show)
 
     const layouts = [
       {
-        type:        'text-painting',
-        paintingIdx: 0,
-        seriesName:  'Self-Portraits',
-        seriesNote:  'the series that started everything',
+        type:       'text-painting',
+        paintingId: 'whos-watching-whom',
+        seriesName: 'Self-portraits',
+        seriesNote: 'the series that started everything',
       },
       {
-        type:        'painting-text',
-        paintingIdx: 7,
-        seriesName:  'Self-Portraits',
-        seriesNote:  'crowned, wounded, and still here',
+        type:       'painting-text',
+        paintingId: 'feelings',
+        seriesName: 'Self-portraits',
+        seriesNote: 'crowned, wounded, and still here',
       },
       {
         type:        'trio',
-        indices:     [4, 5, 6],
+        paintingIds: ['tick-tock', 'guilt', 'the-devils-death'],
         seriesLabel: 'Fractured Time & Inner Ruins',
         seriesNote:  'time haunts every wound',
       },
       {
-        type:        'solo',
-        paintingIdx: 3,
-        seriesName:  'Self-Portraits',
-        seriesNote:  'death dressed as grace',
+        type:       'solo',
+        paintingId: 'goddess-of-death',
+        seriesName: 'Self-portraits',
+        seriesNote: 'death dressed as grace',
       },
     ];
 
     layouts.forEach(layout => {
 
       if (layout.type === 'text-painting') {
-        const p   = PAINTINGS[layout.paintingIdx];
+        const p   = getPaintingById(layout.paintingId);
+        if (!p) return;
         const row = document.createElement('div');
         row.className = 'exhibition-row row-2 reveal-on-scroll';
         const h = 360;
@@ -483,14 +197,14 @@
           <div class="exhibit-text-panel">
             <h3 class="exhibit-panel-title">${layout.seriesName}</h3>
             <p class="exhibit-panel-body" style="font-style:italic;opacity:0.7;margin-bottom:0.5rem;">${layout.seriesNote}</p>
-            <p class="exhibit-panel-body">${p.description.replace(/<[^>]+>/g,'').trim().slice(0,200)}…</p>
+            <p class="exhibit-panel-body exhibit-intro" data-painting-id="${p.id}">${fallbackIntro(p)}</p>
             <a href="painting.html?id=${p.id}" class="btn-gothic" style="margin-top:1.5rem;font-size:0.7rem;padding:0.7rem 1.5rem;">View Work →</a>
           </div>
           <a class="exhibit-piece" href="painting.html?id=${p.id}">
             <div class="exhibit-spotlight"></div>
             <div class="exhibit-frame">
               <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
-              <div class="exhibit-canvas" style="overflow:hidden;">${exhibitImg(p, h)}</div>
+              <div class="exhibit-canvas" data-artwork-container style="overflow:hidden;">${exhibitImg(p, h)}</div>
             </div>
             <div class="exhibit-label">
               <span class="exhibit-label-title">${p.title}</span>
@@ -500,7 +214,8 @@
         hall.appendChild(row);
 
       } else if (layout.type === 'painting-text') {
-        const p   = PAINTINGS[layout.paintingIdx];
+        const p   = getPaintingById(layout.paintingId);
+        if (!p) return;
         const row = document.createElement('div');
         row.className = 'exhibition-row row-2 reverse reveal-on-scroll';
         const h = 340;
@@ -509,7 +224,7 @@
             <div class="exhibit-spotlight"></div>
             <div class="exhibit-frame">
               <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
-              <div class="exhibit-canvas" style="overflow:hidden;">${exhibitImg(p, h)}</div>
+              <div class="exhibit-canvas" data-artwork-container style="overflow:hidden;">${exhibitImg(p, h)}</div>
             </div>
             <div class="exhibit-label">
               <span class="exhibit-label-title">${p.title}</span>
@@ -519,7 +234,7 @@
           <div class="exhibit-text-panel">
             <h3 class="exhibit-panel-title">${layout.seriesName}</h3>
             <p class="exhibit-panel-body" style="font-style:italic;opacity:0.7;margin-bottom:0.5rem;">${layout.seriesNote}</p>
-            <p class="exhibit-panel-body">${p.description.replace(/<[^>]+>/g,'').trim().slice(0,200)}…</p>
+            <p class="exhibit-panel-body exhibit-intro" data-painting-id="${p.id}">${fallbackIntro(p)}</p>
             <a href="painting.html?id=${p.id}" class="btn-gothic" style="margin-top:1.5rem;font-size:0.7rem;padding:0.7rem 1.5rem;">View Work →</a>
           </div>`;
         hall.appendChild(row);
@@ -536,14 +251,15 @@
         const row = document.createElement('div');
         row.className = 'exhibition-row row-3 reveal-on-scroll';
         const heights = [280, 360, 300];
-        layout.indices.forEach((idx, i) => {
-          const p = PAINTINGS[idx];
+        layout.paintingIds.forEach((id, i) => {
+          const p = getPaintingById(id);
+          if (!p) return;
           row.innerHTML += `
             <a class="exhibit-piece" href="painting.html?id=${p.id}">
               <div class="exhibit-spotlight"></div>
               <div class="exhibit-frame">
                 <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
-                <div class="exhibit-canvas" style="overflow:hidden;">${exhibitImg(p, heights[i])}</div>
+                <div class="exhibit-canvas" data-artwork-container style="overflow:hidden;">${exhibitImg(p, heights[i])}</div>
               </div>
               <div class="exhibit-label">
                 <span class="exhibit-label-title">${p.title}</span>
@@ -554,7 +270,8 @@
         hall.appendChild(row);
 
       } else if (layout.type === 'solo') {
-        const p = PAINTINGS[layout.paintingIdx];
+        const p = getPaintingById(layout.paintingId);
+        if (!p) return;
         const divider = document.createElement('div');
         divider.className = 'series-divider reveal-on-scroll';
         divider.innerHTML = `
@@ -571,7 +288,7 @@
             <div class="exhibit-spotlight"></div>
             <div class="exhibit-frame">
               <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
-              <div class="exhibit-canvas" style="overflow:hidden;">${exhibitImg(p, 420)}</div>
+              <div class="exhibit-canvas" data-artwork-container style="overflow:hidden;">${exhibitImg(p, 420)}</div>
             </div>
             <div class="exhibit-label" style="text-align:center;padding:1rem;">
               <span class="exhibit-label-title" style="font-size:1rem;">${p.title}</span>
@@ -581,34 +298,9 @@
         hall.appendChild(wrapper);
       }
     });
-  </script>
 
-  <script>
-    (function () {
-      const btn   = document.getElementById('nav-hamburger');
-      const links = document.querySelector('.nav-links');
-      const nav   = document.querySelector('.gothic-nav');
-      if (!btn || !links) return;
-      btn.addEventListener('click', function () {
-        const open = links.classList.toggle('open');
-        btn.classList.toggle('open', open);
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-      links.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A') {
-          links.classList.remove('open');
-          btn.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-      document.addEventListener('click', function (e) {
-        if (nav && !nav.contains(e.target) && links.classList.contains('open')) {
-          links.classList.remove('open');
-          btn.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    })();
+    // Apply protection to dynamically rendered images
+    if (window._protectArtworkImages) window._protectArtworkImages();
   </script>
 </body>
 </html>

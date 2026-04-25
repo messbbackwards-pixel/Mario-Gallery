@@ -140,8 +140,8 @@
     <p><em>All works copyright © Mario. Do not reproduce without permission.</em></p>
   </footer>
 
-  <script src="js/paintings-data.js"></script>
-  <script src="js/gallery.js"></script>
+  <script src="js/paintings-manifest.js"></script>
+  <script src="js/site.js"></script>
   <script>
     // ─── Build filter buttons from painting tags ─────────────
     const allTags = [...new Set(PAINTINGS.flatMap(p => p.tags))];
@@ -312,6 +312,7 @@
               style="height:${h}px;"
               loading="${loadStrat}"
               draggable="false"
+              data-artwork-img
               decoding="async">`
         : `<div
               class="masonry-placeholder"
@@ -321,7 +322,7 @@
       card.innerHTML = `
         <div class="masonry-motion reveal-on-scroll" data-stagger="${staggerSec}">
           <div class="masonry-frame">
-            <div class="masonry-canvas">
+            <div class="masonry-canvas" data-artwork-container>
               ${imgContent}
             </div>
           </div>
@@ -336,35 +337,6 @@
 
       masonryEl.appendChild(card);
     });
-  </script>
-
-  <script>
-    (function () {
-      const btn   = document.getElementById('nav-hamburger');
-      const links = document.querySelector('.nav-links');
-      const nav   = document.querySelector('.gothic-nav');
-      if (!btn || !links) return;
-
-      btn.addEventListener('click', function () {
-        const open = links.classList.toggle('open');
-        btn.classList.toggle('open', open);
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-      links.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A') {
-          links.classList.remove('open');
-          btn.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-      document.addEventListener('click', function (e) {
-        if (nav && !nav.contains(e.target) && links.classList.contains('open')) {
-          links.classList.remove('open');
-          btn.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    })();
   </script>
 </body>
 </html>

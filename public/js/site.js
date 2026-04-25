@@ -1,8 +1,9 @@
 /**
- * Mario's Gallery — Shared page effects
+ * mariothesmart — Site-wide shared utilities
  * Included on every page.
  *
- * Handles: particles, spotlight, scroll-reveal, parallax.
+ * Handles: image protection, particles, spotlight,
+ *          scroll-reveal, parallax, hamburger nav.
  * Does NOT handle gallery filtering — that lives in gallery.html.
  */
 
@@ -10,38 +11,18 @@
 // Blocks casual right-click save and drag-off on all artwork images.
 //
 // Approach:
-//   - CSS sets pointer-events:none on every artwork <img>, so
+//   - CSS sets pointer-events:none on every [data-artwork-img], so
 //     right-click events land on the container element, not the img.
-//   - We intercept contextmenu on those containers to prevent the
-//     browser "Save Image As" menu from appearing.
+//   - We intercept contextmenu on [data-artwork-container] elements
+//     to prevent the browser "Save Image As" menu.
 //   - dragstart is blocked at the document level as a fallback.
 //   - draggable="false" is set on every artwork img element.
 //
-// Containers covered:
-//   .hero-img-container  — painting page main artwork
-//   .masonry-canvas      — gallery cards
-//   .detail-img-wrap     — painting page detail images
-//   .exhibit-canvas      — exhibition page
-//   .featured-img        — homepage featured cards
-//   #zoom-overlay        — full-view zoom modal
+// To protect a new image context: add data-artwork-img to the <img>
+// and data-artwork-container to its wrapping element. No JS edits needed.
 (function () {
-  var ARTWORK_SEL = [
-    '.hero-img',
-    '.masonry-img',
-    '.detail-img-wrap img',
-    '.exhibit-canvas img',
-    '.featured-img img',
-    '#zoom-img',
-  ].join(',');
-
-  var CONTAINER_SEL = [
-    '.hero-img-container',
-    '.masonry-canvas',
-    '.detail-img-wrap',
-    '.exhibit-canvas',
-    '.featured-img',
-    '#zoom-overlay',
-  ].join(',');
+  var ARTWORK_SEL   = '[data-artwork-img]';
+  var CONTAINER_SEL = '[data-artwork-container]';
 
   function protectImages() {
     document.querySelectorAll(ARTWORK_SEL).forEach(function (img) {
@@ -189,3 +170,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const particleContainer = document.querySelector('.particles-container');
   if (particleContainer) createParticles(particleContainer, 30);
 });
+
+
+// ─── Hamburger Nav ────────────────────────────────────────
+// Shared across all pages. Handles open/close toggle,
+// close-on-link-click, and close-on-outside-click.
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn   = document.getElementById('nav-hamburger');
+    var links = document.querySelector('.nav-links');
+    var nav   = document.querySelector('.gothic-nav');
+    if (!btn || !links) return;
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = links.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    links.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        links.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (nav && !nav.contains(e.target) && links.classList.contains('open')) {
+        links.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+}());

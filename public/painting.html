@@ -41,7 +41,7 @@
     .painting-nav.in-view { opacity: 1; }
   </style>
 
-  <script src="js/paintings-data.js"></script>
+  <script src="js/paintings-manifest.js"></script>
   <script>
     (function() {
       var p = new URLSearchParams(location.search);
@@ -102,6 +102,7 @@
           <div class="c tl"></div><div class="c tr"></div>
           <div class="c bl"></div><div class="c br"></div>
           <div class="hero-img-container" id="hero-img-container"
+               data-artwork-container
                onclick="openZoom(document.getElementById('hero-img').src)"
                style="cursor:zoom-in;">
             <div class="hero-skeleton" id="hero-skeleton"></div>
@@ -114,6 +115,7 @@
               decoding="async"
               loading="eager"
               draggable="false"
+              data-artwork-img
             >
           </div>
           <span class="zoom-hint">click to enlarge</span>
@@ -123,7 +125,7 @@
       <div class="hero-panel" id="hero-panel">
         <span class="panel-series" id="panel-series"></span>
         <h1 class="panel-title" id="panel-title"></h1>
-        <p class="panel-subtitle" id="panel-subtitle"></p>
+        <p class="panel-category" id="panel-category" style="display:none;font-family:var(--font-italic);font-style:italic;font-weight:590;font-size:0.9rem;color:var(--bone-dim);margin-bottom:2.0rem;letter-spacing:0.001em;"></p>
         <div class="panel-rule"></div>
         <div class="panel-meta" id="panel-meta"></div>
         <p class="panel-intro" id="panel-intro" style="display:none;"></p>
@@ -139,6 +141,7 @@
     <div class="story-section" id="story-section">
       <span class="story-label">The Story</span>
       <div class="story-rule"></div>
+      <h3 class="story-title" id="story-title" style="display:none;font-family:var(--font-display);font-size:1.1rem;color:var(--pallor);margin-bottom:1.2rem;letter-spacing:0.04em;"></h3>
       <div class="story-text" id="story-text"></div>
     </div>
 
@@ -156,10 +159,12 @@
 
   </div>
 
-  <div class="zoom-overlay" id="zoom-overlay" onclick="closeZoom()">
+  <div class="zoom-overlay" id="zoom-overlay" data-artwork-container onclick="closeZoom()">
     <button class="zoom-close" onclick="closeZoom()">Close</button>
-    <img id="zoom-img" src="" alt="Full size view" loading="lazy">
+    <img id="zoom-img" src="" alt="Full size view" loading="lazy" data-artwork-img draggable="false">
   </div>
+
+  <script src="js/site.js"></script>
 
   <script>
     var paintingId = document.documentElement.dataset.paintingId || PAINTINGS[0].id;
@@ -212,8 +217,6 @@
     document.getElementById('bc-title').textContent = fb.title;
     document.getElementById('panel-series').textContent = fb.series || '';
     document.getElementById('panel-title').textContent = fb.title;
-    document.getElementById('panel-subtitle').textContent =
-      [fb.year, fb.medium].filter(Boolean).join(' · ');
 
     function buildMetaRows(items) {
       var el = document.getElementById('panel-meta');
@@ -240,91 +243,63 @@
     document.getElementById('pnav-count').textContent =
       (paintingIndex + 1) + ' / ' + PAINTINGS.length;
 
-    (function() {
-      var container = document.getElementById('detail-sections');
-      var phLabels = ['01','02','03'];
-      var phNotes = [
-        'A closer detail — image coming soon.',
-        'Another fragment of this work.',
-        'A third detail, to be revealed.'
-      ];
-
-      for (var i = 0; i < 3; i++) {
-        var isFlip = i % 2 === 1;
-        var sec = document.createElement('div');
-        sec.className = 'detail-section' + (isFlip ? ' flip' : '') + ' scroll-reveal';
-        sec.innerHTML =
-          '<div class="detail-img-wrap">' +
-            '<div class="detail-placeholder">' +
-              '<div class="ph-c tl"></div><div class="ph-c tr"></div>' +
-              '<div class="ph-c bl"></div><div class="ph-c br"></div>' +
-              '<div class="detail-placeholder-inner">' +
-                '<span class="ph-num">' + phLabels[i] + '</span>' +
-                '<span class="ph-label">Detail image · Coming soon</span>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="detail-text">' +
-            '<span class="detail-eyebrow">Detail · ' + phLabels[i] + '</span>' +
-            '<p class="detail-ph-note">' + phNotes[i] + '</p>' +
-          '</div>';
-        container.appendChild(sec);
-      }
-    })();
-
-    fetch('paintings/' + paintingId + '/data.json')
-      .then(function(r) {
-        if (!r.ok) throw new Error('Missing data.json');
-        return r.json();
-      })
-      .then(function(data) {
-        enhancePage(data);
-      })
-      .catch(function() {
-        enhancePage(null);
-      });
+    // ── Single-pass render from manifest ──────────────────
+    // Called after all var/function definitions below to ensure
+    // PAINTING_MOTIFS and MOTIF_SVGS are defined before spawnMotifs runs.
+    // (var declarations are hoisted as undefined; assignment happens at runtime)
 
     function enhancePage(data) {
-      if (data) {
-        if (data.palette) {
-          document.getElementById('ambient-bg').style.background =
-            'radial-gradient(ellipse 65% 55% at 40% 50%, ' + data.palette.glow + ' 0%, transparent 65%),' +
-            'radial-gradient(ellipse 50% 40% at 60% 60%, ' + data.palette.ice + ' 0%, transparent 55%),' +
-            'radial-gradient(ellipse 100% 100% at 50% 50%, #0a0810 0%, #050507 100%)';
+      // data === fb (the full manifest entry). Always defined.
+      // ── Ambient background colours ──────────────────────
+      if (data.palette) {
+        document.getElementById('ambient-bg').style.background =
+          'radial-gradient(ellipse 65% 55% at 40% 50%, ' + data.palette.glow + ' 0%, transparent 65%),' +
+          'radial-gradient(ellipse 50% 40% at 60% 60%, ' + data.palette.ice + ' 0%, transparent 55%),' +
+          'radial-gradient(ellipse 100% 100% at 50% 50%, #0a0810 0%, #050507 100%)';
+        document.documentElement.style.setProperty('--painting-glow', data.palette.glow);
+      }
 
-          document.documentElement.style.setProperty('--painting-glow', data.palette.glow);
-        }
-
+        // ── Category label (Self-portrait / Study / etc.) ───
+        // Shown directly below the title when present.
         if (data.subtitle) {
-          document.getElementById('panel-subtitle').textContent = data.subtitle;
+          var catEl = document.getElementById('panel-category');
+          if (catEl) {
+            catEl.textContent = data.subtitle;
+            catEl.style.display = '';
+          }
         }
 
+        // ── Meta table (re-render with full manifest data) ───
         buildMetaRows([
-          { label: 'Year', value: data.year || fb.year },
-          { label: 'Medium', value: data.medium || fb.medium },
-          { label: 'Size', value: data.dimensions || fb.dimensions },
-          { label: 'Series', value: data.series || fb.series },
+          { label: 'Year',   value: data.year },
+          { label: 'Medium', value: data.medium },
+          { label: 'Size',   value: data.dimensions },
+          { label: 'Series', value: data.series },
         ]);
 
+        // ── Short opener ────────────────────────────────────
         if (data.intro) {
           var introEl = document.getElementById('panel-intro');
           introEl.textContent = data.intro;
           introEl.style.display = '';
         }
 
+        // ── Detail images ───────────────────────────────────
+        // Only render if actual detail images exist.
+        // No placeholders — the section is simply absent when empty.
+        var container = document.getElementById('detail-sections');
+        container.innerHTML = '';
         if (data.images && data.images.details && data.images.details.length) {
-          var container = document.getElementById('detail-sections');
-          container.innerHTML = '';
-
           data.images.details.forEach(function(detail, i) {
             var sec = document.createElement('div');
             sec.className = 'detail-section' + (i % 2 === 1 ? ' flip' : '') + ' scroll-reveal';
             var detailSrc = 'paintings/' + paintingId + '/' + detail.file;
             sec.innerHTML =
-              '<div class="detail-img-wrap" onclick="openZoom(\'' + detailSrc + '\')" style="cursor:zoom-in;">' +
+              '<div class="detail-img-wrap" data-artwork-container onclick="openZoom(\'' + detailSrc + '\')" style="cursor:zoom-in;">' +
                 '<img src="' + detailSrc + '"' +
                      ' alt="' + (detail.caption || 'Detail') + '"' +
                      ' draggable="false"' +
+                     ' data-artwork-img' +
                      ' loading="lazy" decoding="async">' +
               '</div>' +
               '<div class="detail-text">' +
@@ -333,34 +308,12 @@
               '</div>';
             container.appendChild(sec);
           });
-
-          var remaining = Math.max(0, 3 - data.images.details.length);
-          var phLabels = ['01','02','03'];
-          var phNotes = ['A closer detail — image coming soon.','Another fragment.','A third detail.'];
-
-          for (var i = data.images.details.length; i < data.images.details.length + remaining; i++) {
-            var isFlip = i % 2 === 1;
-            var sec = document.createElement('div');
-            sec.className = 'detail-section' + (isFlip ? ' flip' : '') + ' scroll-reveal';
-            sec.innerHTML =
-              '<div class="detail-img-wrap"><div class="detail-placeholder">' +
-                '<div class="ph-c tl"></div><div class="ph-c tr"></div>' +
-                '<div class="ph-c bl"></div><div class="ph-c br"></div>' +
-                '<div class="detail-placeholder-inner">' +
-                  '<span class="ph-num">' + phLabels[i % 3] + '</span>' +
-                  '<span class="ph-label">Detail image · Coming soon</span>' +
-                '</div></div></div>' +
-              '<div class="detail-text">' +
-                '<span class="detail-eyebrow">Detail · ' + phLabels[i % 3] + '</span>' +
-                '<p class="detail-ph-note">' + phNotes[i % 3] + '</p>' +
-              '</div>';
-            container.appendChild(sec);
-          }
         }
 
-        // Apply image protection to any newly rendered detail images
+        // Apply protection to newly rendered detail images
         if (window._protectArtworkImages) window._protectArtworkImages();
 
+        // ── Story text ──────────────────────────────────────
         if (data.story) {
           var storyEl = document.getElementById('story-text');
           storyEl.innerHTML = data.story
@@ -370,31 +323,24 @@
             .join('');
         }
 
+        // ── Story title ─────────────────────────────────────
+        // Rendered as a heading above the story when present.
+        // Currently: whos-watching-whom only.
+        if (data.storyTitle) {
+          var storyTitleEl = document.getElementById('story-title');
+          if (storyTitleEl) {
+            storyTitleEl.textContent = data.storyTitle;
+            storyTitleEl.style.display = '';
+          }
+        }
+
+        // ── Quote ───────────────────────────────────────────
         if (data.quote) {
           document.getElementById('quote-text').textContent = data.quote;
         }
 
-        if (data.motifs) {
-          spawnMotifs(data.motifs);
-        } else {
-          spawnMotifs(fb.motifs || ['👁']);
-        }
-      } else {
-        var story = (fb.description || '').replace(/<[^>]+>/g, '').trim();
-        if (story) {
-          document.getElementById('story-text').innerHTML =
-            story.split('\n\n')
-              .filter(function(p){ return p.trim(); })
-              .map(function(p){ return '<p>' + p.trim() + '</p>'; })
-              .join('');
-        }
-
-        if (fb.quote) {
-          document.getElementById('quote-text').textContent = fb.quote;
-        }
-
-        spawnMotifs(fb.motifs || ['👁']);
-      }
+        // ── Motifs ──────────────────────────────────────────
+        spawnMotifs(data.motifs || ['👁']);
 
       initScrollReveals();
     }
@@ -402,7 +348,7 @@
     // ─── Per-painting custom motif SVGs ───────────────────────────────────────
     // Each painting has a hand-curated set of SVGs extracted from its visual
     // elements. The key is the painting id; fallback uses the generic MOTIF_SVGS
-    // map below (keyed by the emoji/symbol strings in data.json).
+    // map below (keyed by the emoji/symbol strings stored in the manifest motifs array).
     var PAINTING_MOTIFS = {
 
       // Feelings — raven, laurel crown, snake coil, bleeding third eye
@@ -518,7 +464,7 @@
       ]
     };
 
-    // Generic SVG library — keyed by emoji/symbol strings in data.json, used as fallback
+    // Generic SVG library — keyed by emoji/symbol strings in the manifest motifs array, used as fallback
     var MOTIF_SVGS = {
       '\ud83d\udc41': '<svg viewBox="0 0 36 24" fill="none"><path d="M2 12 C7 4,29 4,34 12 C29 20,7 20,2 12Z" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="18" cy="12" r="4.5" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="18" cy="12" r="1.8" fill="currentColor" opacity="0.8"/></svg>',
       '\u29d6': '<svg viewBox="0 0 22 32" fill="none"><path d="M3 2L19 2L19 4C19 10 12 16 12 16C12 16 19 22 19 28L19 30L3 30L3 28C3 22 10 16 10 16C10 16 3 10 3 4Z" stroke="currentColor" stroke-width="1" fill="none"/><line x1="3" y1="2" x2="19" y2="2" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="30" x2="19" y2="30" stroke="currentColor" stroke-width="1.2"/></svg>',
@@ -541,7 +487,7 @@
       var cont = document.getElementById('ambient-motifs');
       if (!cont || cont.childElementCount) return;
 
-      // Use per-painting custom SVG set if available; otherwise build from data.json motif keys
+      // Use per-painting custom SVG set if available; otherwise build from manifest motif keys
       var customSet = PAINTING_MOTIFS[paintingId];
       var svgList;
       if (customSet && customSet.length) {
@@ -613,35 +559,11 @@
       if (e.key === 'ArrowLeft'  && !zoomActive) location.href = 'painting.html?id=' + prev.id;
       if (e.key === 'ArrowRight' && !zoomActive) location.href = 'painting.html?id=' + next.id;
     });
-  </script>
-  <script>
-    (function(){
-      var btn = document.getElementById("nav-hamburger");
-      var links = document.querySelector(".nav-links");
-      var nav  = document.querySelector(".gothic-nav");
-      if (!btn || !links) return;
-      btn.addEventListener("click", function(){
-        var open = links.classList.toggle("open");
-        btn.classList.toggle("open", open);
-        btn.setAttribute("aria-expanded", open ? "true" : "false");
-      });
-      // Close drawer when a link is tapped
-      links.addEventListener("click", function(e){
-        if (e.target.tagName === "A") {
-          links.classList.remove("open");
-          btn.classList.remove("open");
-          btn.setAttribute("aria-expanded", "false");
-        }
-      });
-      // Close drawer when tapping outside the nav
-      document.addEventListener("click", function(e){
-        if (nav && !nav.contains(e.target) && links.classList.contains("open")) {
-          links.classList.remove("open");
-          btn.classList.remove("open");
-          btn.setAttribute("aria-expanded", "false");
-        }
-      });
-    })();
+
+    // ── Render all manifest-backed content ────────────────
+    // Called here — after PAINTING_MOTIFS and MOTIF_SVGS are fully assigned —
+    // so spawnMotifs() can access them without hitting undefined.
+    enhancePage(fb);
   </script>
 </body>
 </html>

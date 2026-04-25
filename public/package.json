@@ -1,0 +1,18 @@
+{
+  "name": "mariothesmart",
+  "version": "1.0.0",
+  "description": "mariothesmart — art portfolio",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "watch": "node -e \"const{execSync}=require('child_process'),fs=require('fs');fs.watch('data/paintings/manifest.json',()=>{console.log('manifest changed — rebuilding...');execSync('node scripts/build.js',{stdio:'inherit'})});console.log('Watching data/paintings/manifest.json...')\""
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {},
+  "_notes": {
+    "workflow": "To add a new painting: (1) add entry to data/paintings/manifest.json, (2) place main.jpg in public/paintings/<slug>/, (3) run: npm run build",
+    "future": "When ready for image pipeline: npm install sharp, then extend scripts/build.js to generate optimized derivatives"
+  }
+}

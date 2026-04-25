@@ -555,10 +555,25 @@ footer.gothic-footer p {
 /* ─── Artwork Image Protection ───────────────────────────────
    Strategy: pure CSS drag/select blocking on the <img> elements
    themselves. Right-click blocking is handled entirely in JS
-   (gallery.js) via contextmenu event interception — no pseudo-
+   (site.js) via contextmenu event interception — no pseudo-
    element overlays that could conflict with fixed positioning,
    z-index stacking, or click handlers.
+
+   Selectors: data-attribute based (scalable — any new image
+   context is protected by adding data-artwork-img to the <img>
+   and data-artwork-container to its wrapper, no CSS edits needed).
+   Legacy class selectors kept as fallback during transition.
 ──────────────────────────────────────────────────────────── */
+
+/* Primary: data-attribute selectors */
+[data-artwork-img] {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+/* Legacy class selectors — kept for any contexts not yet migrated */
 .hero-img,
 .masonry-img,
 .detail-img-wrap img,
@@ -575,6 +590,7 @@ footer.gothic-footer p {
    effects (zoom cursor, scale, openZoom) work normally.
    The img itself doesn't need pointer-events — the container
    catches all clicks. */
+[data-artwork-container],
 .hero-img-container,
 .masonry-canvas,
 .detail-img-wrap,

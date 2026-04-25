@@ -1,0 +1,376 @@
+// ─────────────────────────────────────────────────────────
+// AUTO-GENERATED — DO NOT HAND-EDIT THIS FILE
+// Source: data/paintings/manifest.json
+// Generated: 2026-04-25T15:39:04.419Z
+// To regenerate: node scripts/build.js
+// ─────────────────────────────────────────────────────────
+
+'use strict';
+
+// ─── Series name constants ─────────────────────────────────
+const SERIES = {
+  SELF_PORTRAITS:  'Self-portraits',
+  TIME_STUDIES:    'Time Studies',
+  NARRATIVE_WORKS: 'Narrative Works',
+  STUDIES:         'Studies',
+};
+
+const PAINTINGS = [
+  {
+    "id": "whos-watching-whom",
+    "title": "Who's Watching Whom",
+    "subtitle": "Self-portrait",
+    "year": "2022–2023",
+    "medium": "Acrylic on Paper",
+    "dimensions": "Mixed",
+    "series": "Self-portraits",
+    "tags": [
+      "self-portrait",
+      "nostalgia",
+      "family",
+      "third eye",
+      "clock"
+    ],
+    "featured": false,
+    "exhibitionLayout": "text-painting",
+    "exhibitionOrder": 1,
+    "image": "paintings/whos-watching-whom/main.jpg",
+    "gradient": "linear-gradient(145deg, #050507 0%, #0e0e18 30%, #1a1030 55%, #0a0810 100%)",
+    "icon": "🕐",
+    "description": "<p>A self-portrait built around memory and the things that play on repeat. There's an old TV screen showing a photo of the artist and her brother — a relationship that shaped a lot of who she became.</p><p>The sparkling white eyes were a mistake first — the paper ripped. Then it became one of the truest things in the painting.</p>",
+    "palette": {
+      "accent": "#3a1a2a",
+      "glow": "rgba(120,21,32,0.18)",
+      "ice": "rgba(40,60,100,0.15)"
+    },
+    "motifs": [
+      "👁",
+      "🕐",
+      "💬",
+      "?"
+    ],
+    "intro": "A painting about memory, and the things that play on repeat.",
+    "storyTitle": "",
+    "story": "It’s a small sketch that I made back in 2022, or around that time. I’m not really a fine one when it comes to memorizing, though ironically, I’m a very nostalgic person. And a part of this painting is about nostalgia. There’s the old TV screen with an old picture I found of me and my brother. Our siblingshood is not the best out there, and at the time I made this painting, it was at its worst. I remember begging God to let us be friends, and I remember feeling jealous of his friends for being friends with him. And he, as an older brother, would usually get his friends to sit with him at the time, and I’d pass next to his room and hear them laugh together, then go back to my room and bawl my eyes out. And I never really found anyone talking about older brother issues (lol). I’d always find people making paintings and art pieces, regardless of the art form, and talking about parents’ issues or family issues, and I think my brother would relate to parents’ issues. I’ve never (until I made this painting) found someone talking about older brother issues. I’ve always been attached to him, and I’d always try to get closer to him, but he’d always push me away in every way when we were kids. He never really got it, though I always understood how he feels about our parents, because he pushed me to feel this way about him. But he was a kid, and I understood that even though I was younger. What can I say, though? It’s always the younger sister (?). You can see what I mean by noticing the black paint on his mouth that also kinda makes his mouth feel like it’s opened in an old 2000s cartoonish game style, which shows he wasn’t taken seriously by older generations. And if you look next to him, it’s younger me as well, but there are no features, just pure blur and a third eye (which was a very, very, very common thing in my paintings to find at the time—the third eye). But you could still tell that it’s the head of a child. But the child is pretty conflicted, many wrong things she couldn’t get, many thoughts she thought were normal but really aren’t. She would get used all the time by everyone, even by the person she thought would understand the struggle, but he was the main reason. When you get your eyes to look a bit higher from the TV placement, you’d see a receiver with random numbers that I don’t remember the meaning behind, but I remember while writing them at the time, I was like, “Nah, no worries, future me would understand.” No, Mario, I do NOT understand. But if you look a bit higher, which is probably the place you looked at when I told you to look higher, you’d find a hanging clock with a golden frame and blood on its glass, and I’m not really here to put meanings into your head. You’re free to have your own thoughts. I’ll tell you why later on. Now, can you look down? Yeah, right there. The chocolate cake. A friend of mine drew it for me in a painting she made for me on my birthday around that time, and I mentioned it a few times after in other paintings. Growing up, we wouldn’t really celebrate birthdays as much. We used to when I was so young that I can’t quite remember it vividly, but I can remember some details of it that were very attractive to my childish eyes. So that cake felt very real to me when my friend painted it, especially because I’d always feel lonely on my birthdays at the time. I remember even begging Mom to plot a birthday surprise for me with my friends. That never happened to this day, by the way lol. And since we’re finally talking about this day, even though this painting was around the time of 2022 or the beginning of 2023, this next part I feel very related to. As you look at me (or an older version of me that’s relatable now more than ever), you’d see my eyes, how sparkling white they are. You wouldn’t know if I’m crying or if I’m possessed by the electrons of that TV with the memories it’s playing on repeat, the blood on my mouth, and the question marks engraved on my head. Like the confusion never left, but got more obvious on me. With the blindness of the possession taking control over my soul (since eyes are the windows of the soul). With the blood on my mouth showing that I still beat myself up over things I’m not responsible for, even after growing up, as well as how I got beaten up for things I was never responsible for. It’s 2026 as I’m writing this, and I now see this painting differently because my life has changed a bit. Thing is, as I grow up, I see different meanings and new details in my art that I don’t remember even making on purpose. And that’s why I never say the meanings behind my art. I can let you know the story that opened my heart to it, but I won’t tell you the meanings. If you noticed throughout my yapping, I didn’t even tell future—current now—me the meaning behind any of it. I only feel my meanings. If I were able to say them, I wouldn’t have painted them. And btw, the blindness and white sparkling spots were a mistake at first. The paper was a pretty low-quality one, and this painting was mainly made of acrylics, so it got ripped off. But as an artist, you gotta always find a solution, and as a human, you’ll always find the meaning behind the mistakes. It wasn’t the only mistake that turned into a meaning throughout this painting, by the way. ;)",
+    "quote": "I didn't even tell future-me the meaning behind any of it. I only feel my meanings. If I were able to say them, I wouldn't have painted them.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": [
+        {
+          "file": "detail-1.jpg",
+          "caption": "There’s the old TV screen with an old picture I found of me and my brother. Our siblingshood is not the best out there, and at the time I made this painting, it was at its worst. I remember begging God to let us be friends, and I remember feeling jealous of his friends for being friends with him. And he, as an older brother, would usually get his friends to sit with him at the time, and I’d pass next to his room and hear them laugh together, then go back to my room and bawl my eyes out. And I never really found anyone talking about older brother issues (lol). I’d always find people making paintings and art pieces, regardless of the art form, and talking about parents’ issues or family issues, and I think my brother would relate to parents’ issues. I’ve never (until I made this painting) found someone talking about older brother issues. I’ve always been attached to him, and I’d always try to get closer to him, but he’d always push me away in every way when we were kids. He never really got it, though I always understood how he feels about our parents, because he pushed me to feel this way about him. But he was a kid, and I understood that even though I was younger. What can I say, though? It’s always the younger sister (?). You can see what I mean by noticing the black paint on his mouth that also kinda makes his mouth feel like it’s opened in an old 2000s cartoonish game style, which shows he wasn’t taken seriously by older generations. And if you look next to him, it’s younger me as well, but there are no features, just pure blur and a third eye (which was a very, very, very common thing in my paintings to find at the time—the third eye). But you could still tell that it’s the head of a child. But the child is pretty conflicted, many wrong things she couldn’t get, many thoughts she thought were normal but really aren’t. She would get used all the time by everyone, even by the person she thought would understand the struggle, but he was the main reason."
+        },
+        {
+          "file": "detail-2.jpg",
+          "caption": "When you get your eyes to look a bit higher from the TV placement, you’d see a receiver with random numbers that I don’t remember the meaning behind, but I remember while writing them at the time, I was like, “Nah, no worries, future me would understand.” No, Mario, I do NOT understand. But if you look a bit higher, which is probably the place you looked at when I told you to look higher, you’d find a hanging clock with a golden frame and blood on its glass, and I’m not really here to put meanings into your head. You’re free to have your own thoughts. I’ll tell you why later on."
+        },
+        {
+          "file": "detail-3.jpg",
+          "caption": "Now, can you look down? Yeah, right there. The chocolate cake. A friend of mine drew it for me in a painting she made for me on my birthday around that time, and I mentioned it a few times after in other paintings. Growing up, we wouldn’t really celebrate birthdays as much. We used to when I was so young that I can’t quite remember it vividly, but I can remember some details of it that were very attractive to my childish eyes. So that cake felt very real to me when my friend painted it, especially because I’d always feel lonely on my birthdays at the time. I remember even begging Mom to plot a birthday surprise for me with my friends. That never happened to this day, by the way lol."
+        },
+        {
+          "file": "detail-4.jpg",
+          "caption": "And since we’re finally talking about this day, even though this painting was around the time of 2022 or the beginning of 2023, this next part I feel very related to. As you look at me (or an older version of me that’s relatable now more than ever), you’d see my eyes, how sparkling white they are. You wouldn’t know if I’m crying or if I’m possessed by the electrons of that TV with the memories it’s playing on repeat, the blood on my mouth, and the question marks engraved on my head. Like the confusion never left, but got more obvious on me. With the blindness of the possession taking control over my soul (since eyes are the windows of the soul). With the blood on my mouth showing that I still beat myself up over things I’m not responsible for, even after growing up, as well as how I got beaten up for things I was never responsible for."
+        }
+      ]
+    }
+  },
+  {
+    "id": "the-end-is-near",
+    "title": "The End Is Near",
+    "subtitle": "Self-portrait",
+    "year": "2021",
+    "medium": "Acrylic & Coloured Pencil",
+    "dimensions": "A3",
+    "series": "Self-portraits",
+    "tags": [
+      "self-portrait",
+      "third eye",
+      "red",
+      "horns"
+    ],
+    "featured": false,
+    "exhibitionLayout": null,
+    "exhibitionOrder": null,
+    "image": "paintings/the-end-is-near/main.jpg",
+    "gradient": "linear-gradient(145deg, #0a0305 0%, #200808 35%, #3a0a0a 60%, #0a0305 100%)",
+    "icon": "👁",
+    "description": "<p>The third eye appears again — bleeding this time, not open. One eye white, one eye present, neither quite looking at you. The halo is fiery orange, not holy.</p>",
+    "palette": {
+      "accent": "#3a0808",
+      "glow": "rgba(160,24,40,0.2)",
+      "ice": "rgba(80,20,20,0.12)"
+    },
+    "motifs": [
+      "👁",
+      "🩸"
+    ],
+    "intro": "The third eye appears again — bleeding this time, not open.",
+    "story": "One eye white, one eye present, neither quite looking at you. The halo behind the head is fiery orange — not holy. The hands at the edges hold things that belong to someone else. Red lips, a horn, a held eyeball. The figure is simultaneously sacred and unravelling.",
+    "quote": "You'll always find the meaning behind the mistakes.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  },
+  {
+    "id": "wake-me-up-when-its-over",
+    "title": "Wake Me Up When It's Over",
+    "subtitle": "Study",
+    "year": "2022",
+    "medium": "Coloured Pencil & Acrylic",
+    "dimensions": "A3",
+    "series": "Studies",
+    "tags": [
+      "fire",
+      "glasses",
+      "blue",
+      "dissociation"
+    ],
+    "featured": false,
+    "exhibitionLayout": null,
+    "exhibitionOrder": null,
+    "image": "paintings/wake-me-up-when-its-over/main.jpg",
+    "gradient": "linear-gradient(160deg, #050818 0%, #0a1535 40%, #1a2d50 60%, #050818 100%)",
+    "icon": "🔥",
+    "description": "<p>The head is on fire — not metaphorically. Flames erupt from the skull while the face below stays completely still. Glasses. Bruises. A detached hand with a cigarette.</p>",
+    "palette": {
+      "accent": "#0a1535",
+      "glow": "rgba(74,122,170,0.2)",
+      "ice": "rgba(26,45,74,0.15)"
+    },
+    "motifs": [
+      "🔥",
+      "🔵"
+    ],
+    "intro": "The head is on fire. The face below stays completely still.",
+    "story": "Orange and red flames erupt from the top of the skull while the face below stays completely still. Glasses. Bruises. A detached hand with a cigarette. A phone face-down on the floor. The blue around everything is electric, not peaceful — this blue shows up a lot in the work.",
+    "quote": "Many thoughts she thought were normal but really aren't.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  },
+  {
+    "id": "goddess-of-death",
+    "title": "Goddess of Death",
+    "subtitle": "Self-portrait",
+    "year": "2022",
+    "medium": "Acrylic & Pencil",
+    "dimensions": "A3",
+    "series": "Self-portraits",
+    "tags": [
+      "self-portrait",
+      "decay",
+      "red",
+      "third eye",
+      "glasses"
+    ],
+    "featured": true,
+    "exhibitionLayout": "solo",
+    "exhibitionOrder": 4,
+    "image": "paintings/goddess-of-death/main.jpg",
+    "gradient": "linear-gradient(145deg, #060202 0%, #180808 30%, #3d0c0c 55%, #0a0202 100%)",
+    "icon": "◈",
+    "description": "<p>She's smiling. The face is partially decomposed, the mouth still full of blood and teeth, a third eye weeping down the forehead. Small green leaves fall around her like she's still outside, still alive enough for seasons.</p>",
+    "palette": {
+      "accent": "#200808",
+      "glow": "rgba(120,21,32,0.2)",
+      "ice": "rgba(30,10,10,0.12)"
+    },
+    "motifs": [
+      "👁",
+      "🩸",
+      "👓"
+    ],
+    "intro": "She's smiling. That's the most unsettling part.",
+    "story": "The face is partially decomposed, the mouth still full of blood and teeth, a third eye weeping down the forehead. The halo behind the head is dark red — almost black at its edges. Small green leaves fall around her like she's still outside, still alive enough for seasons to happen around her.",
+    "quote": "As a human you'll always find the meaning behind the mistakes.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  },
+  {
+    "id": "tick-tock",
+    "title": "Tick, Tock",
+    "subtitle": "Study",
+    "year": "2022",
+    "medium": "Acrylic & Coloured Pencil",
+    "dimensions": "A3",
+    "series": "Time Studies",
+    "tags": [
+      "clock",
+      "eyes",
+      "blue",
+      "glasses",
+      "watching"
+    ],
+    "featured": true,
+    "exhibitionLayout": "trio",
+    "exhibitionOrder": 3,
+    "image": "paintings/tick-tock/main.jpg",
+    "gradient": "linear-gradient(160deg, #030818 0%, #081228 35%, #102040 60%, #030818 100%)",
+    "icon": "◎",
+    "description": "<p>Eyes everywhere in the background. A clock floats among them. The figure in the foreground has been stripped of features — just glasses, a red brooch, a hooded shape.</p>",
+    "palette": {
+      "accent": "#081228",
+      "glow": "rgba(74,122,170,0.18)",
+      "ice": "rgba(26,45,74,0.12)"
+    },
+    "motifs": [
+      "◎",
+      "👁",
+      "⧖"
+    ],
+    "intro": "Eyes everywhere. A clock floats among them. The speech bubbles just say 'tick, tock' — like it's the only thing left to say.",
+    "story": "The figure in the foreground has been stripped of features — just glasses, a red brooch, a hooded shape. The hatching in the background is frantic. Every line feels like it was made quickly, like the watching couldn't be paused.",
+    "quote": "It was always the younger sister.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  },
+  {
+    "id": "guilt",
+    "title": "Guilt",
+    "subtitle": "Narrative work",
+    "year": "2022",
+    "medium": "Acrylic & Coloured Pencil",
+    "dimensions": "A3",
+    "series": "Narrative Works",
+    "tags": [
+      "checkerboard",
+      "blindfold",
+      "brain",
+      "clock",
+      "speech bubbles"
+    ],
+    "featured": false,
+    "exhibitionLayout": "trio",
+    "exhibitionOrder": 3,
+    "image": "paintings/guilt/main.jpg",
+    "gradient": "linear-gradient(145deg, #080810 0%, #101018 30%, #181820 55%, #080810 100%)",
+    "icon": "⬡",
+    "description": "<p>\"I'm sorry I made you feel like you're in a maze in your own mind.\" A speech bubble. A blindfolded figure. An exposed brain. A blue clock, floating.</p>",
+    "palette": {
+      "accent": "#101018",
+      "glow": "rgba(60,60,100,0.15)",
+      "ice": "rgba(30,30,60,0.12)"
+    },
+    "motifs": [
+      "💬",
+      "⬡",
+      "?"
+    ],
+    "intro": "A speech bubble. A blindfolded figure. An exposed brain. A blue clock, floating.",
+    "story": "\"I'm sorry I made you feel like you're in a maze in your own mind.\" The background is black and white checkerboard. The second speech bubble asks \"what did I do wrong?\" — to nobody specific.",
+    "quote": "She would get used by everyone — even by the person she thought would understand the struggle.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  },
+  {
+    "id": "the-devils-death",
+    "title": "The Devil's Death",
+    "subtitle": "Self-portrait",
+    "year": "2021–2022",
+    "medium": "Acrylic & Coloured Pencil",
+    "dimensions": "A3",
+    "series": "Self-portraits",
+    "tags": [
+      "self-portrait",
+      "snakes",
+      "skulls",
+      "glasses",
+      "roses"
+    ],
+    "featured": false,
+    "exhibitionLayout": "trio",
+    "exhibitionOrder": 3,
+    "image": "paintings/the-devils-death/main.jpg",
+    "gradient": "linear-gradient(145deg, #050508 0%, #0c0c16 30%, #10101e 55%, #050508 100%)",
+    "icon": "🐍",
+    "description": "<p>Everything crowds into this one. Skulls, a snake, roses, hands, waves at the bottom. Blood from the eyes. The silver tinfoil crown catches the light differently every time.</p>",
+    "palette": {
+      "accent": "#0c0c16",
+      "glow": "rgba(40,40,80,0.14)",
+      "ice": "rgba(20,20,50,0.1)"
+    },
+    "motifs": [
+      "🐍",
+      "👓",
+      "🩸"
+    ],
+    "intro": "Everything crowds into this one. Everything present at once, refusing to quiet down.",
+    "story": "Skulls in the upper left. A snake on the right. A strange creature that's also a face. Roses. Hands. Waves at the bottom. Blood running from the eyes and the forehead wound. The silver tinfoil crown catches the light differently every time. This painting is dense in the way a very full day feels when you're trying to sleep.",
+    "quote": "As I grow up I see different meanings and new details in my art that I don’t remember even making on purpose.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  },
+  {
+    "id": "feelings",
+    "title": "Feelings",
+    "subtitle": "Self-portrait",
+    "year": "2021–2022",
+    "medium": "Acrylic & Coloured Pencil",
+    "dimensions": "A3",
+    "series": "Self-portraits",
+    "tags": [
+      "self-portrait",
+      "crown",
+      "raven",
+      "snake",
+      "blood"
+    ],
+    "featured": true,
+    "exhibitionLayout": "painting-text",
+    "exhibitionOrder": 2,
+    "image": "paintings/feelings/main.jpg",
+    "gradient": "linear-gradient(145deg, #050507 0%, #0a0810 30%, #141020 55%, #050507 100%)",
+    "icon": "🐦",
+    "description": "<p>A raven on the left shoulder. A snake on the right arm. A gold laurel crown. The third eye runs blood down the forehead. Despite everything in it, there is a stillness here.</p>",
+    "palette": {
+      "accent": "#0a0810",
+      "glow": "rgba(40,30,60,0.15)",
+      "ice": "rgba(20,15,40,0.1)"
+    },
+    "motifs": [
+      "🐦",
+      "👁",
+      "🩸"
+    ],
+    "intro": "Despite everything in it, there is a stillness here.",
+    "story": "A raven perches on the left shoulder. A snake wraps around the right arm. The figure wears a gold laurel crown and a black hooded cloak with gold embroidery. The third eye runs blood down the centre of the forehead. The right eye has a single tear. This is one of the most formally composed works in the collection.",
+    "quote": "I remember begging God to let us be friends.",
+    "images": {
+      "display": "main.jpg",
+      "thumb": "main.jpg",
+      "details": []
+    }
+  }
+];
+
+window.PAINTINGS = PAINTINGS;
+window.SERIES    = SERIES;
+
+function getPainting(id) {
+  return PAINTINGS.find(p => p.id === id) || null;
+}
+
+function getPaintingAt(index) {
+  return PAINTINGS[((index % PAINTINGS.length) + PAINTINGS.length) % PAINTINGS.length];
+}
+
+window.getPainting   = getPainting;
+window.getPaintingAt = getPaintingAt;

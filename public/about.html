@@ -4,7 +4,7 @@
   <link rel="icon" href="favicon.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="About Mario — Egyptian painter exploring identity, time, and the inner life through oil and mixed media.">
+  <meta name="description" content="About Mario — Egyptian painter exploring identity, time, and the inner life through acrylic and coloured pencil.">
   <title>Mario — About</title>
   <link rel="stylesheet" href="styles/main.css">
   <style>
@@ -213,7 +213,7 @@
     <p><em>All works copyright © Mario. Do not reproduce without permission.</em></p>
   </footer>
 
-  <script src="js/gallery.js"></script>
+  <script src="js/site.js"></script>
   <script>
     // Scroll reveals
     const io = new IntersectionObserver((entries) => {
@@ -223,35 +223,6 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.bio-section, .motif-item').forEach(el => io.observe(el));
-  </script>
-  <script>
-    (function(){
-      var btn = document.getElementById("nav-hamburger");
-      var links = document.querySelector(".nav-links");
-      var nav  = document.querySelector(".gothic-nav");
-      if (!btn || !links) return;
-      btn.addEventListener("click", function(){
-        var open = links.classList.toggle("open");
-        btn.classList.toggle("open", open);
-        btn.setAttribute("aria-expanded", open ? "true" : "false");
-      });
-      // Close drawer when a link is tapped
-      links.addEventListener("click", function(e){
-        if (e.target.tagName === "A") {
-          links.classList.remove("open");
-          btn.classList.remove("open");
-          btn.setAttribute("aria-expanded", "false");
-        }
-      });
-      // Close drawer when tapping outside the nav
-      document.addEventListener("click", function(e){
-        if (nav && !nav.contains(e.target) && links.classList.contains("open")) {
-          links.classList.remove("open");
-          btn.classList.remove("open");
-          btn.setAttribute("aria-expanded", "false");
-        }
-      });
-    })();
   </script>
 </body>
 </html>
