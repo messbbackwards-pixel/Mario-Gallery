@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="About Mario — Egyptian painter exploring identity, time, and the inner life through acrylic and coloured pencil.">
+  <meta property="og:title" content="Mario - About">
+  <meta property="og:description" content="About Mario, her work, materials, and recurring motifs.">
+  <meta property="og:type" content="profile">
+  <meta property="og:image" content="/paintings/feelings/main.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
   <title>Mario — About</title>
   <link rel="stylesheet" href="styles/main.css">
   <style>
@@ -214,15 +220,6 @@
   </footer>
 
   <script src="js/site.js"></script>
-  <script>
-    // Scroll reveals
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.bio-section, .motif-item').forEach(el => io.observe(el));
-  </script>
+  <script src="js/about.js"></script>
 </body>
 </html>

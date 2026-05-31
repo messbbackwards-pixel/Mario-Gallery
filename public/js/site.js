@@ -1,3 +1,24 @@
+// Small shared escaping helpers for manifest-driven templates.
+// They keep future artwork text from accidentally breaking markup.
+(function () {
+  var ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+      return ESCAPE_MAP[ch];
+    });
+  }
+
+  window.htmlEscape = escapeHtml;
+  window.attrEscape = escapeHtml;
+}());
+
 /**
  * mariothesmart — Site-wide shared utilities
  * Included on every page.

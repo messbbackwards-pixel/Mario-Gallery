@@ -1,190 +1,223 @@
-# Adding a New Painting
+# Adding A Painting
 
-## The complete workflow
+This project is manifest-driven. The browser reads generated data from:
 
-### 1. Place the image
-
-```
-public/paintings/<new-slug>/main.jpg
+```text
+public/js/paintings-manifest.js
 ```
 
-Use a descriptive slug that matches the painting title (e.g., `the-weight-of-blue`).
+Do not hand-edit that generated file. Edit the source data instead:
 
----
-
-### 2. Edit the manifest — one file, one place
-
-Open `data/paintings/manifest.json` and add a new entry to the `paintings` array.
-
-Copy this template and fill in every field:
-
-```json
-{
-  "id": "your-slug-here",
-  "title": "Your Painting Title",
-  "subtitle": "Self-portrait",
-  "year": "2024",
-  "medium": "Acrylic & Coloured Pencil",
-  "dimensions": "A3",
-  "series": "Self-portraits",
-  "tags": ["self-portrait", "eye", "blue"],
-  "featured": false,
-  "exhibitionLayout": null,
-  "exhibitionOrder": null,
-  "image": "paintings/your-slug-here/main.jpg",
-  "gradient": "linear-gradient(145deg, #050507 0%, #0e0e18 30%, #1a1030 55%, #0a0810 100%)",
-  "icon": "👁",
-  "description": "<p>Short HTML description used as fallback.</p>",
-  "palette": {
-    "accent": "#0a0810",
-    "glow": "rgba(40,30,60,0.15)",
-    "ice": "rgba(20,15,40,0.1)"
-  },
-  "motifs": ["👁", "🩸"],
-  "intro": "A single sentence that opens the painting's story.",
-  "story": "The longer prose story.\n\nNew paragraphs are separated by a blank line.",
-  "quote": "A quote about this painting.",
-  "images": {
-    "display": "main.jpg",
-    "thumb": "main.jpg",
-    "details": []
-  }
-}
+```text
+public/data/paintings/manifest.json
 ```
 
----
+## Quick Workflow
 
-### 3. Run the build
+From the project root:
 
 ```bash
-node scripts/build.js
+npm run add:painting -- "Your Painting Title"
 ```
 
-or
+That command:
+
+1. Creates a new manifest entry.
+2. Creates the folder at `public/paintings/<slug>/`.
+3. Points the new entry at `public/paintings/<slug>/main.jpg`.
+
+Then place the image here:
+
+```text
+public/paintings/<slug>/main.jpg
+```
+
+Then run:
+
+```bash
+npm run build
+npm run check
+```
+
+The site will not silently accept broken data. The build/check scripts validate slugs, duplicate IDs, required fields, series names, exhibition layouts, and every referenced image file.
+
+## Useful Commands
+
+```bash
+npm run validate
+```
+
+Checks only `manifest.json`.
 
 ```bash
 npm run build
 ```
 
-This regenerates `public/js/paintings-manifest.js` from the manifest. That file is auto-generated — **never hand-edit it**.
+Validates the manifest and regenerates `public/js/paintings-manifest.js`.
 
----
+```bash
+npm run check
+```
 
-### 4. Done
+Runs the full project sanity check: manifest validation, generated manifest freshness, and JavaScript syntax checks.
 
-The painting now appears:
-- **Gallery** — automatically included, with the correct tags
-- **Painting detail page** — `painting.html?id=your-slug-here`
-- **Prev/Next navigation** — in the position it sits in the manifest array
+```bash
+npm run add:painting -- "The Weight of Blue" --series "Self-portraits" --year 2026 --tags "self-portrait,blue"
+```
 
----
+Creates a more specific starter entry.
 
-## Optional: Exhibition
+## Gallery-Only Painting
 
-To include the painting in the exhibition, two things are required:
+To add a normal gallery painting:
 
-**1. Set the manifest fields** (for documentation and build reporting):
+1. Run `npm run add:painting -- "Title"`.
+2. Put `main.jpg` inside the created folder.
+3. Edit the generated starter text in `manifest.json`.
+4. Run `npm run build`.
+5. Run `npm run check`.
+
+Keep these values as `null`:
 
 ```json
-"exhibitionLayout": "solo",
-"exhibitionOrder": 5
+"exhibitionLayout": null,
+"exhibitionOrder": null
 ```
 
-**2. Add an entry to the `layouts` array in `exhibition.html`** — this is what actually controls what appears. The manifest fields alone do nothing to the exhibition page.
+## Featured On Homepage
 
-Open `exhibition.html` and find the `const layouts = [...]` array. Add your painting in the appropriate position:
-
-```js
-{
-  type:       'solo',
-  paintingId: 'your-slug',
-  seriesName: 'Self-portraits',
-  seriesNote:  'a note about this work',
-},
-```
-
-Layout type options:
-- `text-painting` — text panel left, painting right
-- `painting-text` — painting left, text panel right
-- `trio` — three paintings in a row; use `paintingIds: ['slug-a', 'slug-b', 'slug-c']`
-- `solo` — centred, standalone
-
-For `trio`, the layout looks like:
-
-```js
-{
-  type:        'trio',
-  paintingIds: ['slug-a', 'slug-b', 'slug-c'],
-  seriesLabel: 'Series Label',
-  seriesNote:  'a note',
-},
-```
-
----
-
-## Optional: Featured on homepage
-
-To feature the painting in the "Selected Works" grid on the homepage:
+Set:
 
 ```json
 "featured": true
 ```
 
-The homepage shows the first 3 paintings with `featured: true` in manifest order.
+The homepage displays the first three featured paintings in manifest order. If more than three paintings are featured, `npm run validate` warns you.
 
----
+## Exhibition
 
-## Optional: Story title
-
-If the painting's story section should have a named heading:
+The exhibition is driven by:
 
 ```json
-"storyTitle": "The question behind this one"
+"exhibition": {
+  "layouts": []
+}
 ```
 
----
+Add a painting to `exhibition.layouts`, then run `npm run build`. The generated browser manifest fills `exhibitionLayout` and `exhibitionOrder` for the site.
 
-## Optional: Detail images (close-ups)
+The old per-painting fields are still allowed as a safety check:
 
-Place detail images in the same folder:
-
-```
-public/paintings/your-slug-here/detail-01.jpg
-public/paintings/your-slug-here/detail-02.jpg
+```json
+"exhibitionLayout": "solo",
+"exhibitionOrder": 4
 ```
 
-Then add them to the manifest:
+If those fields disagree with `exhibition.layouts`, the build fails.
+
+## Exhibition Layout Types
+
+### Text Left, Painting Right
+
+```json
+{
+  "type": "text-painting",
+  "paintingId": "your-slug",
+  "seriesName": "Self-portraits",
+  "seriesNote": "short note"
+}
+```
+
+### Painting Left, Text Right
+
+```json
+{
+  "type": "painting-text",
+  "paintingId": "your-slug",
+  "seriesName": "Self-portraits",
+  "seriesNote": "short note"
+}
+```
+
+### Three Paintings In One Row
+
+```json
+{
+  "type": "trio",
+  "paintingIds": ["slug-a", "slug-b", "slug-c"],
+  "seriesLabel": "Series Label",
+  "seriesNote": "short note"
+}
+```
+
+`trio` must contain exactly three painting IDs.
+
+### One Centered Painting
+
+```json
+{
+  "type": "solo",
+  "paintingId": "your-slug",
+  "seriesName": "Self-portraits",
+  "seriesNote": "short note"
+}
+```
+
+## Detail Images
+
+Place detail images in the painting folder:
+
+```text
+public/paintings/your-slug/detail-1.jpg
+public/paintings/your-slug/detail-2.jpg
+```
+
+Then add them to the painting entry:
 
 ```json
 "images": {
   "display": "main.jpg",
   "thumb": "main.jpg",
   "details": [
-    { "file": "detail-01.jpg", "caption": "The eye, close up" },
-    { "file": "detail-02.jpg", "caption": "The crown, close up" }
+    {
+      "file": "detail-1.jpg",
+      "caption": "The eye, close up"
+    },
+    {
+      "file": "detail-2.jpg",
+      "caption": "The crown, close up"
+    }
   ]
 }
 ```
 
-Run `npm run build` again. The painting detail page will show the detail sections automatically.
+Run:
 
----
+```bash
+npm run build
+npm run check
+```
 
-## Series values
+## Required Series Values
 
-Use one of the existing series names exactly (case-sensitive):
+Use one of these exactly:
 
 | Value | Meaning |
 |---|---|
-| `"Self-portraits"` | The main series |
+| `"Self-portraits"` | Main self-portrait works |
 | `"Time Studies"` | Clock, time, watching |
 | `"Narrative Works"` | Story-driven works |
-| `"Studies"` | Experimental / studies |
+| `"Studies"` | Experiments and studies |
 
----
+## Image Optimization
 
-## The file you never hand-edit
+The optional optimization script still requires `sharp`:
 
-`public/js/paintings-manifest.js` is auto-generated. Every time you run `npm run build` it is overwritten. Changes made directly to it will be lost.
+```bash
+npm install --prefix public sharp
+npm run optimize:images
+npm run build
+npm run check
+```
 
-**The manifest is:** `data/paintings/manifest.json`
+It creates optimized display/thumb files and updates the manifest.

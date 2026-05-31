@@ -5,7 +5,13 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "build": "node public/scripts/build.js",
+    "validate": "node public/scripts/validate-manifest.js",
+    "check": "node public/scripts/check.js",
+    "add:painting": "node public/scripts/add-painting.js",
+    "watch": "node public/scripts/watch-manifest.js",
+    "optimize:images": "node public/scripts/optimize-images.js"
   },
   "dependencies": {
     "express": "^4.18.2"
