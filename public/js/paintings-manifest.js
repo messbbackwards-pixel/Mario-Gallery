@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // AUTO-GENERATED - DO NOT HAND-EDIT THIS FILE
 // Source: data/paintings/manifest.json
-// Generated: 2026-05-31T22:43:03.157Z
+// Generated: 2026-05-31T22:46:20.521Z
 // To regenerate from project root: npm run build
 // ---------------------------------------------------------
 
@@ -199,7 +199,7 @@ const PAINTINGS = [
     "title": "Tick, Tock",
     "subtitle": "Self portrait",
     "year": "2022",
-    "medium": "Watercolors, Colored Pencils & Ink",
+    "medium": "Watercolors, Colored Pencils & Ink on 150 gsm Canson Paper",
     "dimensions": "10.5 x 15.5",
     "series": "Time Studies",
     "tags": [
