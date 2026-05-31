@@ -1,9 +1,17 @@
+# Dependencies
 node_modules/
+
+# Local environment
 .env
-.DS_Store
+
+# Logs and runtime noise
 *.log
+.codex-server.*.log
+
+# Build/deploy output
 dist/
-node_modules/
 .vercel/
-dist/
+
+# OS files
 .DS_Store
+Thumbs.db

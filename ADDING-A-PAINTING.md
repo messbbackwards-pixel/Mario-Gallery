@@ -214,7 +214,7 @@ Use one of these exactly:
 The optional optimization script still requires `sharp`:
 
 ```bash
-npm install --prefix public sharp
+npm install --save-dev sharp
 npm run optimize:images
 npm run build
 npm run check

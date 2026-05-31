@@ -3,7 +3,7 @@
  * Optional image optimization pipeline.
  *
  * Requires sharp:
- *   npm install --prefix public sharp
+ *   npm install --save-dev sharp
  *
  * Generates display.jpg and thumb.jpg next to each painting's source image,
  * then updates images.display/images.thumb in the manifest.
@@ -19,7 +19,7 @@ try {
   sharp = require('sharp');
 } catch (err) {
   console.error('sharp is required for image optimization.');
-  console.error('Install it with: npm install --prefix public sharp');
+  console.error('Install it with: npm install --save-dev sharp');
   process.exit(1);
 }
 

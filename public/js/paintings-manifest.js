@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // AUTO-GENERATED - DO NOT HAND-EDIT THIS FILE
 // Source: data/paintings/manifest.json
-// Generated: 2026-05-31T15:45:10.443Z
+// Generated: 2026-05-31T16:01:49.776Z
 // To regenerate from project root: npm run build
 // ---------------------------------------------------------
 
