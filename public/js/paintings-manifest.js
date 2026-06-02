@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // AUTO-GENERATED - DO NOT HAND-EDIT THIS FILE
 // Source: data/paintings/manifest.json
-// Generated: 2026-06-02T22:57:41.030Z
+// Generated: 2026-06-02T23:26:49.427Z
 // To regenerate from project root: npm run build
 // ---------------------------------------------------------
 
@@ -38,9 +38,9 @@ const PAINTINGS = [
     "icon": "🕐",
     "description": "<p>A self-portrait built around memory and the things that play on repeat. There's an old TV screen showing a photo of the artist and her brother — a relationship that shaped a lot of who she became.</p><p>The sparkling white eyes were a mistake first — the paper ripped. Then it became one of the truest things in the painting.</p>",
     "palette": {
-      "accent": "#3a1a2a",
-      "glow": "rgba(120,21,32,0.18)",
-      "ice": "rgba(40,60,100,0.15)"
+      "accent": "#0d5b63",
+      "glow": "rgba(0,180,190,0.18)",
+      "ice": "rgba(70,220,230,0.12)"
     },
     "motifs": [
       "👁",
