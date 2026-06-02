@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // AUTO-GENERATED - DO NOT HAND-EDIT THIS FILE
 // Source: data/paintings/manifest.json
-// Generated: 2026-06-02T23:26:49.427Z
+// Generated: 2026-06-02T23:32:19.898Z
 // To regenerate from project root: npm run build
 // ---------------------------------------------------------
 
@@ -34,7 +34,7 @@ const PAINTINGS = [
     "exhibitionLayout": "text-painting",
     "exhibitionOrder": 1,
     "image": "paintings/whos-watching-whom/main.jpg",
-    "gradient": "linear-gradient(145deg, #050507 0%, #0e0e18 30%, #1a1030 55%, #0a0810 100%)",
+    "gradient": "linear-gradient(145deg, #040809 0%, #07161a 30%, #0d3b42 55%, #040809 100%)",
     "icon": "🕐",
     "description": "<p>A self-portrait built around memory and the things that play on repeat. There's an old TV screen showing a photo of the artist and her brother — a relationship that shaped a lot of who she became.</p><p>The sparkling white eyes were a mistake first — the paper ripped. Then it became one of the truest things in the painting.</p>",
     "palette": {
