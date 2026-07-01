@@ -211,20 +211,6 @@
         '<svg viewBox="0 0 14 22" fill="none"><ellipse cx="7" cy="8" rx="4" ry="3" stroke="currentColor" stroke-width="0.9" fill="none" opacity="0.5"/><path d="M7 11C7 11 4 15 5 18C5.5 20 8.5 20 9 18C10 15 7 11 7 11Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>'
       ],
 
-      // Goddess of Death — decomposing face, dark halo, leaves falling, blood teeth, glasses
-      'goddess-of-death': [
-        // Bleeding eye (detailed — more decay feel)
-        '<svg viewBox="0 0 36 28" fill="none"><path d="M2 14 C7 5,29 5,34 14 C29 23,7 23,2 14Z" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="18" cy="14" r="5" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="18" cy="14" r="2" fill="currentColor" opacity="0.7"/><line x1="17" y1="19" x2="15" y2="27" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.55"/><line x1="19" y1="19" x2="20" y2="26" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/></svg>',
-        // Dark halo arc
-        '<svg viewBox="0 0 36 20" fill="none"><path d="M3 18C3 18 5 8 18 4C31 8 33 18 33 18" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/><path d="M8 16C8 16 10 9 18 7C26 9 28 16 28 16" stroke="currentColor" stroke-width="0.7" fill="none" stroke-linecap="round" opacity="0.4"/></svg>',
-        // Falling leaf
-        '<svg viewBox="0 0 18 24" fill="none"><path d="M9 2C9 2 16 8 14 16C12 20 9 22 9 22C9 22 6 20 4 16C2 8 9 2 9 2Z" stroke="currentColor" stroke-width="1" fill="none"/><line x1="9" y1="2" x2="9" y2="22" stroke="currentColor" stroke-width="0.7" opacity="0.4"/><path d="M9 10C9 10 13 12 14 16" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.35"/></svg>',
-        // Blood drop
-        '<svg viewBox="0 0 16 24" fill="none"><path d="M8 2C8 2 14 10 14 15C14 19.4 11.3 22 8 22C4.7 22 2 19.4 2 15C2 10 8 2 8 2Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
-        // Glasses (signature element of this figure)
-        '<svg viewBox="0 0 40 26" fill="none"><rect x="2" y="6" width="16" height="14" rx="7" stroke="currentColor" stroke-width="1.1" fill="none"/><rect x="22" y="6" width="16" height="14" rx="7" stroke="currentColor" stroke-width="1.1" fill="none"/><line x1="18" y1="13" x2="22" y2="13" stroke="currentColor" stroke-width="1.1"/><line x1="2" y1="8" x2="0" y2="5" stroke="currentColor" stroke-width="1"/><line x1="38" y1="8" x2="40" y2="5" stroke="currentColor" stroke-width="1"/></svg>'
-      ],
-
       // Guilt — speech bubble, checkerboard tile, blindfold, question mark, exposed brain lines
       'guilt': [
         // Speech bubble (rounded, blunt)

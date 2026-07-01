@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // AUTO-GENERATED - DO NOT HAND-EDIT THIS FILE
 // Source: data/paintings/manifest.json
-// Generated: 2026-07-01T16:47:30.345Z
+// Generated: 2026-07-01T17:02:18.906Z
 // To regenerate from project root: npm run build
 // ---------------------------------------------------------
 
@@ -147,47 +147,6 @@ const PAINTINGS = [
     "intro": "The head is on fire. The face below stays completely still.",
     "story": "Orange and red flames erupt from the top of the skull while the face below stays completely still. Glasses. Bruises. A detached hand with a cigarette. A phone face-down on the floor. The blue around everything is electric, not peaceful — this blue shows up a lot in the work.",
     "quote": "Many thoughts she thought were normal but really aren't.",
-    "images": {
-      "display": "main.jpg",
-      "thumb": "main.jpg",
-      "details": []
-    }
-  },
-  {
-    "id": "goddess-of-death",
-    "title": "Goddess of Death",
-    "subtitle": "Self-portrait",
-    "year": "2022",
-    "medium": "Acrylic & Pencil",
-    "dimensions": "A3",
-    "series": "Self-portraits",
-    "tags": [
-      "self-portrait",
-      "decay",
-      "red",
-      "third eye",
-      "glasses"
-    ],
-    "featured": true,
-    "exhibitionLayout": "solo",
-    "exhibitionOrder": 5,
-    "image": "paintings/goddess-of-death/main.jpg",
-    "gradient": "linear-gradient(145deg, #060202 0%, #180808 30%, #3d0c0c 55%, #0a0202 100%)",
-    "icon": "◈",
-    "description": "<p>She's smiling. The face is partially decomposed, the mouth still full of blood and teeth, a third eye weeping down the forehead. Small green leaves fall around her like she's still outside, still alive enough for seasons.</p>",
-    "palette": {
-      "accent": "#200808",
-      "glow": "rgba(120,21,32,0.2)",
-      "ice": "rgba(30,10,10,0.12)"
-    },
-    "motifs": [
-      "👁",
-      "🩸",
-      "👓"
-    ],
-    "intro": "She's smiling. That's the most unsettling part.",
-    "story": "The face is partially decomposed, the mouth still full of blood and teeth, a third eye weeping down the forehead. The halo behind the head is dark red — almost black at its edges. Small green leaves fall around her like she's still outside, still alive enough for seasons to happen around her.",
-    "quote": "As a human you'll always find the meaning behind the mistakes.",
     "images": {
       "display": "main.jpg",
       "thumb": "main.jpg",
@@ -363,12 +322,6 @@ const EXHIBITION_LAYOUTS = [
     "paintingId": "guilt",
     "seriesName": "Fractured Time & Inner Ruins",
     "seriesNote": "time haunts every wound"
-  },
-  {
-    "type": "solo",
-    "paintingId": "goddess-of-death",
-    "seriesName": "Self-portraits",
-    "seriesNote": "death dressed as grace"
   }
 ];
 
