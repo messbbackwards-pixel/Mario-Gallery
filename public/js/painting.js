@@ -239,20 +239,6 @@
         '<svg viewBox="0 0 26 28" fill="none"><path d="M13 2L23 7.5V18.5L13 24L3 18.5V7.5Z" stroke="currentColor" stroke-width="1" fill="none"/></svg>'
       ],
 
-      // The Devil's Death — skulls, snakes, roses, hands, waves, blood from eyes
-      'the-devils-death': [
-        // Skull (simplified frontal)
-        '<svg viewBox="0 0 24 28" fill="none"><path d="M4 14C4 8 8 3 12 3C16 3 20 8 20 14C20 18 18 21 18 21L6 21C6 21 4 18 4 14Z" stroke="currentColor" stroke-width="1" fill="none"/><rect x="7" y="21" width="10" height="5" rx="1" stroke="currentColor" stroke-width="0.9" fill="none"/><line x1="10" y1="21" x2="10" y2="26" stroke="currentColor" stroke-width="0.8"/><line x1="14" y1="21" x2="14" y2="26" stroke="currentColor" stroke-width="0.8"/><circle cx="9" cy="14" r="2" stroke="currentColor" stroke-width="0.8" fill="none"/><circle cx="15" cy="14" r="2" stroke="currentColor" stroke-width="0.8" fill="none"/></svg>',
-        // Snake (sinuous, longer)
-        '<svg viewBox="0 0 28 32" fill="none"><path d="M6 28C6 28 10 32 15 28C20 24 14 17 19 12C24 7 27 11 27 11" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M22 8C22 8 24 7 27 11" stroke="currentColor" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.5"/></svg>',
-        // Rose (simplified — petals arc)
-        '<svg viewBox="0 0 22 26" fill="none"><circle cx="11" cy="10" r="5" stroke="currentColor" stroke-width="1" fill="none"/><path d="M7 9C7 9 5 6 7 4C9 2 11 4 11 4" stroke="currentColor" stroke-width="0.8" fill="none"/><path d="M15 9C15 9 17 6 15 4C13 2 11 4 11 4" stroke="currentColor" stroke-width="0.8" fill="none"/><path d="M11 15C11 15 11 20 11 24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 18C8 18 6 17 7 15" stroke="currentColor" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.5"/></svg>',
-        // Blood drop from eye (eye with drip)
-        '<svg viewBox="0 0 30 28" fill="none"><path d="M2 12 C7 4,23 4,28 12 C23 20,7 20,2 12Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="15" cy="12" r="3.5" stroke="currentColor" stroke-width="0.9" fill="none"/><line x1="15" y1="15.5" x2="13" y2="26" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/></svg>',
-        // Wave (bottom of painting)
-        '<svg viewBox="0 0 36 14" fill="none"><path d="M0 7C4 3 8 11 12 7C16 3 20 11 24 7C28 3 32 11 36 7" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg>'
-      ],
-
       // The End Is Near — third eye, horns, halo glow, held eyeball, blood drip
       'the-end-is-near': [
         // Third eye bleeding

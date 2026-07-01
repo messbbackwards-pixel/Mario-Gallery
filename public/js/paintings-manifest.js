@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // AUTO-GENERATED - DO NOT HAND-EDIT THIS FILE
 // Source: data/paintings/manifest.json
-// Generated: 2026-06-02T23:32:19.898Z
+// Generated: 2026-07-01T16:47:30.345Z
 // To regenerate from project root: npm run build
 // ---------------------------------------------------------
 
@@ -170,7 +170,7 @@ const PAINTINGS = [
     ],
     "featured": true,
     "exhibitionLayout": "solo",
-    "exhibitionOrder": 4,
+    "exhibitionOrder": 5,
     "image": "paintings/goddess-of-death/main.jpg",
     "gradient": "linear-gradient(145deg, #060202 0%, #180808 30%, #3d0c0c 55%, #0a0202 100%)",
     "icon": "◈",
@@ -213,7 +213,7 @@ const PAINTINGS = [
       "ocd"
     ],
     "featured": true,
-    "exhibitionLayout": "trio",
+    "exhibitionLayout": "solo",
     "exhibitionOrder": 3,
     "image": "paintings/tick-tock/main.jpg",
     "gradient": "linear-gradient(160deg, #030818 0%, #081228 35%, #102040 60%, #030818 100%)",
@@ -272,8 +272,8 @@ const PAINTINGS = [
       "speech bubbles"
     ],
     "featured": false,
-    "exhibitionLayout": "trio",
-    "exhibitionOrder": 3,
+    "exhibitionLayout": "solo",
+    "exhibitionOrder": 4,
     "image": "paintings/guilt/main.jpg",
     "gradient": "linear-gradient(145deg, #080810 0%, #101018 30%, #181820 55%, #080810 100%)",
     "icon": "⬡",
@@ -291,47 +291,6 @@ const PAINTINGS = [
     "intro": "A speech bubble. A blindfolded figure. An exposed brain. A blue clock, floating.",
     "story": "\"I'm sorry I made you feel like you're in a maze in your own mind.\" The background is black and white checkerboard. The second speech bubble asks \"what did I do wrong?\" — to nobody specific.",
     "quote": "She would get used by everyone — even by the person she thought would understand the struggle.",
-    "images": {
-      "display": "main.jpg",
-      "thumb": "main.jpg",
-      "details": []
-    }
-  },
-  {
-    "id": "the-devils-death",
-    "title": "The Devil's Death",
-    "subtitle": "Self-portrait",
-    "year": "2021–2022",
-    "medium": "Acrylic & Coloured Pencil",
-    "dimensions": "A3",
-    "series": "Self-portraits",
-    "tags": [
-      "self-portrait",
-      "snakes",
-      "skulls",
-      "glasses",
-      "roses"
-    ],
-    "featured": false,
-    "exhibitionLayout": "trio",
-    "exhibitionOrder": 3,
-    "image": "paintings/the-devils-death/main.jpg",
-    "gradient": "linear-gradient(145deg, #050508 0%, #0c0c16 30%, #10101e 55%, #050508 100%)",
-    "icon": "🐍",
-    "description": "<p>Everything crowds into this one. Skulls, a snake, roses, hands, waves at the bottom. Blood from the eyes. The silver tinfoil crown catches the light differently every time.</p>",
-    "palette": {
-      "accent": "#0c0c16",
-      "glow": "rgba(40,40,80,0.14)",
-      "ice": "rgba(20,20,50,0.1)"
-    },
-    "motifs": [
-      "🐍",
-      "👓",
-      "🩸"
-    ],
-    "intro": "Everything crowds into this one. Everything present at once, refusing to quiet down.",
-    "story": "Skulls in the upper left. A snake on the right. A strange creature that's also a face. Roses. Hands. Waves at the bottom. Blood running from the eyes and the forehead wound. The silver tinfoil crown catches the light differently every time. This painting is dense in the way a very full day feels when you're trying to sleep.",
-    "quote": "As I grow up I see different meanings and new details in my art that I don’t remember even making on purpose.",
     "images": {
       "display": "main.jpg",
       "thumb": "main.jpg",
@@ -394,13 +353,15 @@ const EXHIBITION_LAYOUTS = [
     "seriesNote": "crowned, wounded, and still here"
   },
   {
-    "type": "trio",
-    "paintingIds": [
-      "tick-tock",
-      "guilt",
-      "the-devils-death"
-    ],
-    "seriesLabel": "Fractured Time & Inner Ruins",
+    "type": "solo",
+    "paintingId": "tick-tock",
+    "seriesName": "Fractured Time & Inner Ruins",
+    "seriesNote": "time haunts every wound"
+  },
+  {
+    "type": "solo",
+    "paintingId": "guilt",
+    "seriesName": "Fractured Time & Inner Ruins",
     "seriesNote": "time haunts every wound"
   },
   {
